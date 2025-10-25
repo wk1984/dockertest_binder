@@ -17,7 +17,7 @@ RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     r-climate4r r-irkernel r-devtools \
-	tensorflow-gpu==2.* tensorflow==2.* keras=2.* \
+	tensorflow-gpu==2.15 tensorflow==2.15 keras=2.15 \
 	pycaret==3.* mlflow xgboost catboost && \
     mamba clean --all --yes 
 #	&& R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
