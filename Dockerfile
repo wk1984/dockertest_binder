@@ -10,9 +10,9 @@ USER root
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo mambauser
 
-RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata sudo && apt-get clean && \
-    chown -R jovyan:users /home/jovyan && \
-    chown -R jovyan:users /usr/local/share/ && \
+RUN apt-get -qq update && apt-get -qq install -y xorg git wget build-essential tzdata sudo && apt-get clean && \
+    chown -R mambauser:users /home/mambauser && \
+    chown -R mambauser:users /usr/local/share/ && \
     rm -rf /var/lib/apt/lists/*
 
 # RUN conda install mamba -y -n base -c conda-forge
