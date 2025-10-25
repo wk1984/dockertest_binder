@@ -40,3 +40,5 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
   R --vanilla -e 'IRkernel::installspec(name = "base", displayname = "climate4R (deep)", user = FALSE)'
     
 USER jovyan
+
+RUN jupyter-lab --version
