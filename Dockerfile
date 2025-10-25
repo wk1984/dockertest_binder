@@ -7,6 +7,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 USER root
 
+RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
 RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata sudo && apt-get clean && \
