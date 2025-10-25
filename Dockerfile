@@ -5,7 +5,7 @@ ENV TZ=Etc/UTC
 
 USER root
 RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata && apt-get clean && \
-    chown -R $NB_USER:users /gpfs /home/$NB_USER/shared && \
+    chown -R $NB_USER:users /home/$NB_USER/shared && \
     chown -R jovyan:users /home/jovyan
 
 USER jovyan
@@ -13,7 +13,6 @@ USER jovyan
 RUN conda install mamba -y -n base -c conda-forge && \
     # https://github.com/proxystore/taps/issues/151#issuecomment-2340406425 \
     mamba install -y -n base jupyter 'libsqlite<3.46' nbgitpuller jupyterhub-idle-culler jupyterlab-git \
-    # this tensorflow is for the climate4R + tensorflow environment, installed here due to reticulate looking for python in the default env
     tensorflow keras
 
 # climate4R + tensorflow for deep learning
