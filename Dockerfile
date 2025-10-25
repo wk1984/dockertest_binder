@@ -5,7 +5,6 @@ ENV TZ=Etc/UTC
 
 USER root
 
-RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
 RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata && apt-get clean && \
