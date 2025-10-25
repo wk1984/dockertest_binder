@@ -36,6 +36,7 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
   keras=2.6.* \
   jupyter \
   python=3.9.* && \
+  mamba clean --all --yes && \
   R --vanilla -e 'IRkernel::installspec(name = "base", displayname = "climate4R (deep)", user = FALSE)'
     
 USER jovyan
