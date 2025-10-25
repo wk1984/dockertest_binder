@@ -41,4 +41,12 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     
 USER jovyan
 
-RUN jupyter-lab --version
+# ---- 新增的测试步骤 ----
+# 在构建时测试 jupyter-lab 是否可以正常调用。
+# --version 会打印版本号并成功退出(返回码0)。如果 jupyter-lab 安装失败，构建会在此处停止。
+RUN echo "Testing Jupyter Lab installation..." && \
+    jupyter-lab --version && \
+    echo "Jupyter Lab test successful."
+    
+# 设置工作目录
+WORKDIR /workspace
