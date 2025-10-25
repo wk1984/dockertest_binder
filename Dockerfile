@@ -1,5 +1,5 @@
 # FROM jupyter/base-notebook:python-3.10.11
-FROM docker pull mambaorg/micromamba:2.3-cuda12.8.1-ubuntu22.04
+FROM mambaorg/micromamba:2.3-cuda12.8.1-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
