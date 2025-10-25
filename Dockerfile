@@ -37,7 +37,7 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
   jupyter \
   python=3.9.* && \
   mamba clean --all --yes && \
-  R --vanilla -e 'IRkernel::installspec(name = "base", displayname = "climate4R (deep)", user = FALSE)'
+  R --vanilla -e 'IRkernel::installspec()'
     
 USER jovyan
 
@@ -49,4 +49,4 @@ RUN echo "Testing Jupyter Lab installation..." && \
     echo "Jupyter Lab test successful."
     
 # 设置工作目录
-WORKDIR /workspace
+WORKDIR /home/jovyan
