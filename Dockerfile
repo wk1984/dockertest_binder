@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata su
 RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
-    r-climate4r tensorflow==2.10.* keras=2.10.* r-irkernel r-devtools tk 'r-base>4.3'&& \
+    r-climate4r tensorflow==2.10.* keras=2.10.* r-irkernel r-devtools 'tk>=8.6.14' 'r-base>4.3'&& \
     mamba clean --all --yes && \
 	R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
     
