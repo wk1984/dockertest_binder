@@ -1,4 +1,5 @@
-FROM jupyter/base-notebook:python-3.10.11
+# FROM jupyter/base-notebook:python-3.10.11
+FROM docker pull mambaorg/micromamba:2.3-cuda12.8.1-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -13,7 +14,7 @@ RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata su
     chown -R jovyan:users /usr/local/share/ && \
     rm -rf /var/lib/apt/lists/*
 
-RUN conda install mamba -y -n base -c conda-forge
+# RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     r-climate4r r-irkernel r-devtools \
