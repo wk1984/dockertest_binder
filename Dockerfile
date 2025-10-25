@@ -7,16 +7,15 @@ USER root
 
 RUN usermod -aG sudo jovyan
 
-RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata && apt-get clean && \
+RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata sudo && apt-get clean && \
 #     chown -R $NB_USER:users /home/$NB_USER/shared && \
-    chown -R jovyan:users /home/jovyan
+    chown -R jovyan:users /home/jovyan && \
+    chown -R jovyan:users /usr/local/share/ && \
+    rm -rf /var/lib/apt/lists/*
 
 USER jovyan
 
-RUN conda install mamba -y -n base -c conda-forge && \
-    # https://github.com/proxystore/taps/issues/151#issuecomment-2340406425 \
-    mamba install -y -n base jupyter 'libsqlite<3.46' nbgitpuller jupyterhub-idle-culler jupyterlab-git \
-    tensorflow keras
+RUN conda install mamba -y -n base -c conda-forge
 
 # climate4R + tensorflow for deep learning
 COPY c4r-tf.yml c4r-tf.yml
