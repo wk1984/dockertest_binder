@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:python-3.9.13
+FROM jupyter/base-notebook:python-3.10.11
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -17,7 +17,7 @@ RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     r-climate4r r-irkernel r-devtools \
-	tensorflow-gpu==2.6.* tensorflow==2.6.* keras=2.6.* \
+	tensorflow-gpu==2.* tensorflow==2.* keras=2.* \
 	pycaret==3.* mlflow xgboost catboost && \
     mamba clean --all --yes 
 #	&& R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
