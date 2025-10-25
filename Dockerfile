@@ -4,7 +4,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 USER root
-RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata && apt-get clean
+
+RUN usermod -aG sudo jovyan
+
+RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata && apt-get clean && \
+#     chown -R $NB_USER:users /home/$NB_USER/shared && \
+    chown -R jovyan:users /home/jovyan
 
 USER jovyan
 
