@@ -14,7 +14,11 @@ RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata su
 
 RUN conda install mamba -y -n base -c conda-forge
 
-# RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
+RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
+    r-climate4r tensorflow==2.6.* keras=2.6.* r-irkernel && \
+    mamba clean --all --yes && \
+    R --vanilla -e 'IRkernel::installspec()'
+    
 #   r-base=3.6.* \
 #   r-loader=1.7.1 \
 #   r-loader.2nc=0.1.1 \
