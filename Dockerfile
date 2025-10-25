@@ -19,6 +19,7 @@ RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-e
 # RUN conda install mamba -y -n base -c conda-forge
 
 RUN micromamba install -c conda-forge -c r -c santandermetgroup --override-channels \
+    jupyterlab \
     r-climate4r r-irkernel r-devtools \
 	tensorflow-gpu==2.15 tensorflow==2.15 keras=2.15 \
 	pycaret==3.* mlflow xgboost catboost && \
