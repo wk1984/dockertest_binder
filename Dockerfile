@@ -15,33 +15,11 @@ RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata su
 RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
-    r-climate4r tensorflow-gpu==2.6.* tensorflow==2.6.* keras=2.6.* r-irkernel r-devtools pycaret && \
+    r-climate4r r-irkernel r-devtools \
+	tensorflow-gpu==2.6.* tensorflow==2.6.* keras=2.6.* \
+	pycaret && \
     mamba clean --all --yes 
 #	&& R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
-    
-#   r-base=3.6.* \
-#   r-loader=1.7.1 \
-#   r-loader.2nc=0.1.1 \
-#   r-transformer=2.1.0 \
-#   r-downscaler=3.3.2 \
-#   r-visualizer=1.6.0 \
-#   r-downscaler.keras=1.0.0 \
-#   r-climate4r.value=0.0.2 \
-#   r-climate4r.udg=0.2.4 \
-#   r-value=2.2.2 \
-#   r-loader.java=1.1.1 \
-#   r-tensorflow=2.6.0 \
-#   r-irkernel=1.2 \
-#   r-magrittr=2.0.1 \
-#   r-rcolorbrewer=1.1_2 \
-#   r-gridextra=2.3 \
-#   r-ggplot2=3.3.3 \
-#   tensorflow=2.6.* \
-#   keras=2.6.* \
-#   jupyter \
-#   python=3.9.* && \
-#   mamba clean --all --yes && \
-#   R --vanilla -e 'IRkernel::installspec()'
     
 USER jovyan
 
@@ -55,6 +33,7 @@ RUN echo "Testing Jupyter Lab installation..." && \
 # 验证安装
 RUN python -c "import tensorflow as tf; \
                print('TensorFlow version:', tf.__version__); \
+			   print('CUDA available:', tf.test.is_built_with_cuda())
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
 
 # 设置工作目录
