@@ -16,8 +16,8 @@ RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     r-climate4r tensorflow-gpu==2.10.* tensorflow==2.10.* keras=2.10.* r-irkernel r-devtools pycaret && \
-    mamba clean --all --yes && \
-	R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
+    mamba clean --all --yes 
+#	&& R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
     
 #   r-base=3.6.* \
 #   r-loader=1.7.1 \
@@ -51,7 +51,12 @@ USER jovyan
 RUN echo "Testing Jupyter Lab installation..." && \
     jupyter-lab --version && \
     echo "Jupyter Lab test successful."
-    
+
+# 验证安装
+RUN python -c "import tensorflow as tf; \
+               print('TensorFlow version:', tf.__version__); \
+               print('GPU available:', tf.config.list_physical_devices('GPU'))"
+
 # 设置工作目录
 WORKDIR /home/jovyan
 
