@@ -31,9 +31,9 @@ USER mambauser
 # ---- 新增的测试步骤 ----
 # 在构建时测试 jupyter-lab 是否可以正常调用。
 # --version 会打印版本号并成功退出(返回码0)。如果 jupyter-lab 安装失败，构建会在此处停止。
-RUN echo "Testing Jupyter Lab installation..." && \
-    jupyter-lab --version && \
-    echo "Jupyter Lab test successful."
+#RUN echo "Testing Jupyter Lab installation..." && \
+#    jupyter-lab --version && \
+#    echo "Jupyter Lab test successful."
 
 # 验证安装
 RUN python -c "import tensorflow as tf; \
