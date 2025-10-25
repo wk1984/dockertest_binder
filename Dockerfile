@@ -50,3 +50,5 @@ RUN echo "Testing Jupyter Lab installation..." && \
     
 # 设置工作目录
 WORKDIR /home/jovyan
+
+CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
