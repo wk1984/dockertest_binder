@@ -7,8 +7,8 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 USER root
 
-RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
-RUN usermod -aG sudo jovyan
+# RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
+RUN usermod -aG sudo mambauser
 
 RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata sudo && apt-get clean && \
     chown -R jovyan:users /home/jovyan && \
@@ -17,14 +17,14 @@ RUN apt-get update && apt-get install -y xorg git wget build-essential tzdata su
 
 # RUN conda install mamba -y -n base -c conda-forge
 
-RUN mamba install -c conda-forge -c r -c santandermetgroup --override-channels \
+RUN micromamba install -c conda-forge -c r -c santandermetgroup --override-channels \
     r-climate4r r-irkernel r-devtools \
 	tensorflow-gpu==2.15 tensorflow==2.15 keras=2.15 \
 	pycaret==3.* mlflow xgboost catboost && \
-    mamba clean --all --yes 
+    micromamba clean --all --yes 
 #	&& R --vanilla -e 'library(devtools);install_github("jasonleebrown/machisplin")'
     
-USER jovyan
+USER mambauser
 
 # ---- 新增的测试步骤 ----
 # 在构建时测试 jupyter-lab 是否可以正常调用。
@@ -40,6 +40,6 @@ RUN python -c "import tensorflow as tf; \
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
 
 # 设置工作目录
-WORKDIR /home/jovyan
+WORKDIR /home/mambauser
 
 CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
