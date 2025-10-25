@@ -36,12 +36,12 @@ USER mambauser
 #    echo "Jupyter Lab test successful."
 
 # 验证安装
-RUN python -c "import tensorflow as tf; \
-               print('TensorFlow version:', tf.__version__); \
-			   print('CUDA available:', tf.test.is_built_with_cuda()); \
-               print('GPU available:', tf.config.list_physical_devices('GPU'))"
+#RUN python -c "import tensorflow as tf; \
+#               print('TensorFlow version:', tf.__version__); \
+#			   print('CUDA available:', tf.test.is_built_with_cuda()); \
+#               print('GPU available:', tf.config.list_physical_devices('GPU'))"
 
 # 设置工作目录
 WORKDIR /home/mambauser
 
-CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
+#CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
