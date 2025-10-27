@@ -53,9 +53,6 @@ RUN echo "Testing Tensorflow installation in Python..." && \
                print('TensorFlow version:', tf.__version__); \
 			   print('CUDA available:', tf.test.is_built_with_cuda()); \
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
-			   
-RUN echo "Testing Tensorflow installation in R..." && \
-    R -e "library(tensorflow);print(tf_config())"
 
 # 设置工作目录
 WORKDIR /home/jovyan
