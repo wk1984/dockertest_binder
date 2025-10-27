@@ -17,7 +17,7 @@ RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata
 
 RUN conda install mamba -y -n base -c conda-forge
 
-RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
+RUN mamba install -c conda-forge -c nvidia --override-channels \
     cartopy hdf5 h5py netCDF4 scikit-learn \
     cudatoolkit=11.2.* cudnn=8.1.* numpy=1.* -y && \
 	conda clean --all
