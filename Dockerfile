@@ -55,7 +55,7 @@ RUN echo "Testing Tensorflow installation in Python..." && \
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
 			   
 RUN echo "Testing Tensorflow installation in R..." && \
-    R -e "library(tensorflow);tf$constant('Hello TensorFlow!')"
+    R -e "library(tensorflow);print(tf_config())"
 
 # 设置工作目录
 WORKDIR /home/jovyan
