@@ -9,14 +9,17 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 USER root
 
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
-RUN usermod -aG sudo jovyan
+# RUN usermod -aG sudo jovyan
 
 RUN apt-get -qq update && \
     apt-get -qq install -y git wget build-essential tzdata sudo \
-                           zlib1g-dev ffmpeg libsm6 libxext6 libgl1-mesa-glx && \
-    apt-get clean && \
+                           zlib1g-dev ffmpeg libsm6 libxext6 \
+						   libgl1-mesa-glx && \
+	usermod -aG sudo jovyan && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
+	apt-get -qq autoremove && \
+	apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 RUN conda install mamba -y -n base -c conda-forge
@@ -24,9 +27,10 @@ RUN conda install mamba -y -n base -c conda-forge
 RUN mamba install -c conda-forge -c nvidia --override-channels -y \
     cartopy hdf5 h5py netCDF4 scikit-learn ipywidgets \
     cudatoolkit=11.2.* cudnn=8.1.* numpy=1.* && \
-	conda clean --all
+	conda clean --all -y
 	
 RUN pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* && \
+    rm -rf /tmp/* && \
     rm -rf ~/.cache/pip
 
 USER jovyan
