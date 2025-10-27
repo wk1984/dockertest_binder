@@ -9,7 +9,7 @@ USER root
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
-RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata sudo zlib1g-dev && \
+RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata sudo zlib1g-dev ffmpeg libsm6 libxext6 && \
     apt-get clean && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
