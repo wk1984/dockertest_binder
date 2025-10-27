@@ -10,7 +10,7 @@ USER root
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
-RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-essential tzdata sudo && \
+RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-essential tzdata sudo libsqlite3-dev && \
     apt-get clean && \
     mkdir -p /opt/conda/lib/R/library && \
     chown -R jovyan:users /home/jovyan && \
