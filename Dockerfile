@@ -26,7 +26,8 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-
 RUN pip install tensorflow==2.10.*
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
-    r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras pycaret mlflow xgboost catboost jupyterlab 
+    r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras r-terra r-raster \
+    pycaret mlflow xgboost catboost jupyterlab 
    
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/transformer.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.java.git', upgrade = 'never')"
@@ -39,7 +40,8 @@ RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderM
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/visualizeR.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.value.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.datasets.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/jasonleebrown/machisplin.git', upgrade = 'never')"
+
+RUN R -e "library(devtools);devtools::install_github('jasonleebrown/machisplin'), upgrade = 'never')"
 
 RUN echo "library(reticulate);reticulate::use_condaenv('base');" > "/home/jovyan/.Rprofile"
 
