@@ -12,7 +12,7 @@ RUN usermod -aG sudo jovyan
 
 RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-essential tzdata sudo && \
     apt-get clean && \
-    mkdir -r /opt/conda/lib/R/library && \
+    mkdir -p /opt/conda/lib/R/library && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
     chown -R jovyan:users /opt/conda/lib/R/library && \
