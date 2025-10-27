@@ -26,7 +26,8 @@ RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-
 RUN pip install tensorflow==2.10.*
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
-    r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras r-terra r-raster \
+    r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras \
+    r-terra r-raster r-nloptr \ # required by MACHISPLIN
     pycaret mlflow xgboost catboost jupyterlab 
    
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/transformer.git', upgrade = 'never')"
