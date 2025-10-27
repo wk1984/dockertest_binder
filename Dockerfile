@@ -59,5 +59,6 @@ RUN echo "Testing Tensorflow installation in Python..." && \
 
 # 设置工作目录
 WORKDIR /home/jovyan/work
+RUN wget https://raw.githubusercontent.com/wk1984/dockertest_binder/refs/heads/main/demo_downscaleR_keras.ipynb
 
 #CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
