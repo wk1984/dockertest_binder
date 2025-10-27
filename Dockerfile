@@ -14,6 +14,7 @@ RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-e
     apt-get clean && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
+    chown -R jovyan:users /opt/conda/lib/R/library && \
     rm -rf /var/lib/apt/lists/*
 
 RUN conda install mamba -y -n base -c conda-forge
