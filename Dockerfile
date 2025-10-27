@@ -9,7 +9,7 @@ USER root
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
-RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata sudo && \
+RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata sudo zlib1g-dev && \
     apt-get clean && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
@@ -26,6 +26,8 @@ RUN pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscali
     rm -rf ~/.cache/pip
 
 USER jovyan
+
+RUN python -c "import dl4ds as dds"
 
 # ---- 新增的测试步骤 ----
 # 在构建时测试 jupyter-lab 是否可以正常调用。
