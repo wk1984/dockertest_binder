@@ -35,7 +35,8 @@ RUN conda install mamba -y -n base -c conda-forge && \
         pycaret mlflow xgboost catboost -y && \
     pip install tensorflow==2.10.* && \
     mamba clean -afy && \
-    pip cache purge
+    pip cache purge && \
+    rm -rf /home/root/.cache/pip
 
 # 1.3: 安装所有 R 的 GitHub 包
 RUN R -e "library(devtools); \
@@ -52,7 +53,8 @@ RUN R -e "library(devtools); \
         devtools::install_git('https://github.com/SantanderMetGroup/climate4R.datasets.git', upgrade = 'never'); \
         devtools::install_github('jasonleebrown/machisplin', upgrade = 'never');" && \
     # 清理 R 编译缓存
-    rm -rf /tmp/R*
+    rm -rf /tmp/R* && \
+    rm -rf /home/root/.cache/R/devtools
 
 # 1.4: 下载工作文件
 WORKDIR /home/jovyan/work
@@ -93,7 +95,8 @@ RUN conda install mamba -y -n base -c conda-forge && \
         pycaret mlflow xgboost catboost -y && \
     pip install tensorflow==2.10.* && \
     mamba clean -afy && \
-    pip cache purge
+    pip cache purge && \
+    rm -rf /home/root/.cache/pip
 
 # 2.3: 【魔法步骤】从 builder 阶段复制已编译好的 R 库
 # 这是多阶段构建的核心
