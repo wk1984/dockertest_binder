@@ -26,17 +26,17 @@ RUN pip install tensorflow==2.10.*
 RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
     r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras pycaret mlflow xgboost catboost jupyterlab 
    
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/transformer.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.java.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.2nc.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4r.UDG.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/VALUE.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.keras.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/visualizeR.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.value.git', upgrade = 'never')"
-R -e "library(devtools);devtools::install_git('https://github.com/jasonleebrown/machisplin.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/transformer.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.java.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.2nc.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4r.UDG.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/VALUE.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.keras.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/visualizeR.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.value.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/jasonleebrown/machisplin.git', upgrade = 'never')"
 
 USER jovyan
 
@@ -48,10 +48,14 @@ RUN echo "Testing Jupyter Lab installation..." && \
     echo "Jupyter Lab test successful."
 
 # 验证安装
-RUN python -c "import tensorflow as tf; \
+RUN echo "Testing Tensorflow installation in Python..." && \
+    python -c "import tensorflow as tf; \
                print('TensorFlow version:', tf.__version__); \
 			   print('CUDA available:', tf.test.is_built_with_cuda()); \
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
+			   
+RUN echo "Testing Tensorflow installation in R..." && \
+    R -e "library(tensorflow);tf$constant('Hello TensorFlow!')"
 
 # 设置工作目录
 WORKDIR /home/jovyan
