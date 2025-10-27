@@ -1,5 +1,4 @@
-FROM jupyter/base-notebook:python-3.10.11
-# FROM mambaorg/micromamba:2.3-cuda12.8.1-ubuntu22.04
+FROM jupyter/base-notebook:python-3.9.13
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -10,38 +9,19 @@ USER root
 # RUN useradd -m -s /bin/bash jovyan && echo "jovyan:111" | chpasswd
 RUN usermod -aG sudo jovyan
 
-RUN apt-get -qq update && apt-get -qq install -y apt-utils xorg git wget build-essential tzdata sudo && \
+RUN apt-get -qq update && apt-get -qq install -y git wget build-essential tzdata sudo && \
     apt-get clean && \
-    mkdir -p /opt/conda/lib/R/library && \
     chown -R jovyan:users /home/jovyan && \
     chown -R jovyan:users /usr/local/share/ && \
-    chown -R jovyan:users /opt/conda/lib/R/library && \
     rm -rf /var/lib/apt/lists/*
 
 RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
+    cartopy hdf5 h5py netCDF4 scikit-learn \
     cudatoolkit=11.2.* cudnn=8.1.* numpy=1.* -y
 	
-RUN pip install tensorflow==2.10.*
-
-RUN mamba install -c conda-forge -c r -c santandermetgroup -c nvidia --override-channels \
-    r-base r-irkernel r-devtools r-tensorflow r-reticulate r-keras \
-    jupyterlab 
-   
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/transformer.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.java.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.2nc.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4r.UDG.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/loadeR.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/VALUE.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.keras.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/visualizeR.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.value.git', upgrade = 'never')"
-RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.datasets.git', upgrade = 'never')"
-
-RUN echo "library(reticulate);reticulate::use_condaenv('base');" > "/home/jovyan/.Rprofile"
+RUN pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy=1.*
 
 USER jovyan
 
@@ -61,6 +41,6 @@ RUN echo "Testing Tensorflow installation in Python..." && \
 
 # 设置工作目录
 WORKDIR /home/jovyan/work
-RUN wget https://raw.githubusercontent.com/wk1984/dockertest_binder/refs/heads/main/demo_downscaleR_keras.ipynb
+RUN wget https://github.com/carlos-gg/dl4ds/blob/master/notebooks/DL4DS_tutorial.ipynb
 
 #CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
