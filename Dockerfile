@@ -36,6 +36,7 @@ RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderM
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/downscaleR.keras.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/visualizeR.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.value.git', upgrade = 'never')"
+RUN R -e "library(devtools);devtools::install_git('https://github.com/SantanderMetGroup/climate4R.datasets.git', upgrade = 'never')"
 RUN R -e "library(devtools);devtools::install_git('https://github.com/jasonleebrown/machisplin.git', upgrade = 'never')"
 
 USER jovyan
@@ -55,6 +56,6 @@ RUN echo "Testing Tensorflow installation in Python..." && \
                print('GPU available:', tf.config.list_physical_devices('GPU'))"
 
 # 设置工作目录
-WORKDIR /home/jovyan
+WORKDIR /home/jovyan/work
 
 #CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
