@@ -8,3 +8,4 @@ pydap
 gcsfs
 intake
 intake-esm
+pydantic>=1.8
