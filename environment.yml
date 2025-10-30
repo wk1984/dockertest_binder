@@ -22,7 +22,7 @@ dependencies:
   - bokeh
   - dask
   - intake
-  - intake_esm
+  - intake-esm
   - pip
   - pytest
   - rasterio
