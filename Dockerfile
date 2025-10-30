@@ -12,7 +12,7 @@ USER root
 RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge --override-channels -y \
-    intake-esm intake && \
+    intake-esm intake requests aiohttp && \
 	conda clean --all -y
 
 USER jovyan
