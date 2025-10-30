@@ -1,0 +1,7 @@
+xarray
+siphon
+pandas
+numpy
+netCDF4
+cftime
+pydap
