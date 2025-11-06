@@ -37,7 +37,7 @@ RUN . /root/.bashrc \
     && mamba install -y ipykernel hdf5=*=*openmpi* netcdf4=*=*openmpi* gcc gxx jsoncpp boost -c conda-forge \
     && python -V
 
-RUN which mpic++
+RUN which mpic++ && gcc -v
 
 # 克隆 dvm-dos-tem 仓库，使用 --depth 1 进行浅克隆，减小体积
 RUN git clone --depth 1 -b v0.8.3 https://gh-proxy.com/https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem
