@@ -35,7 +35,7 @@ RUN yum update -y && \
 
 # 安装新版boost
 RUN wget https://archives.boost.io/release/1.74.0/source/boost_1_74_0.tar.gz && \
-    tar -zxvf boost_1_74_0.tar.gz && \
+    tar -zxf boost_1_74_0.tar.gz && \
     cd boost_1_74_0 && \
     ./bootstrap.sh --quiet --prefix=/usr/local --with-libraries=all && \
     ./b2 install
