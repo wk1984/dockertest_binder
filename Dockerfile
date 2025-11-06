@@ -34,7 +34,7 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs \
-    && mamba install ipykernel hdf5=*=*mpich* -c conda-forge \
+    && mamba install ipykernel hdf5=*=*openmpi* netcdf4===*=*openmpi* -c conda-forge \
     && python -V
     
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
