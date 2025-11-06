@@ -37,8 +37,7 @@ RUN yum update -y && \
 RUN wget https://archives.boost.io/release/1.74.0/source/boost_1_74_0.tar.gz && \
     tar -zxf boost_1_74_0.tar.gz && \
     cd boost_1_74_0 && \
-    ./bootstrap.sh --prefix=/usr/local --with-libraries=all && \
-    ./b2 install
+    ./bootstrap.sh --prefix=/usr/local --with-libraries=all
 
 # 设置环境变量（不使用变量扩展）
 ENV PATH=/usr/lib64/openmpi/bin:/usr/bin
