@@ -48,7 +48,8 @@ RUN yum update -y && \
         openmpi-devel \
         hdf5-openmpi-devel \
         netcdf-openmpi-devel \
-        time && \
+        time \
+        autoconf automake libtool pkgconfig && \
     yum clean all && \
     rm -rf /var/cache/yum
 
