@@ -34,7 +34,7 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs \
-    && mamba install -y ipykernel hdf5=*=*openmpi* netcdf4=*=*openmpi* gcc -c conda-forge \
+    && mamba install -y ipykernel hdf5=*=*openmpi* netcdf4=*=*openmpi* gcc gxx -c conda-forge \
     && python -V
 
 RUN which mpic++
