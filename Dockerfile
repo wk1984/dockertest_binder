@@ -43,7 +43,7 @@ RUN which mpic++
 RUN git clone --depth 1 -b v0.8.3 https://gh-proxy.com/https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem
 
 # 编译模型
-RUN cd /opt/dvm-dos-tem && . /root/.bashrc && make USEMPI=true CC=mpic++
+# RUN cd /opt/dvm-dos-tem && . /root/.bashrc && make USEMPI=true CC=mpic++
 
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 
