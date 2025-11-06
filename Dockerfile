@@ -46,6 +46,6 @@ RUN git clone --depth 1 -b v0.8.3 \
         /opt/dvm-dos-tem
 
 WORKDIR /opt/dvm-dos-tem
-RUN make USEMPI=true CC=mpic++
+# RUN make USEMPI=true CC=mpic++
 
 WORKDIR /workspace
