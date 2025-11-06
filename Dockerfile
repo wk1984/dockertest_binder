@@ -40,11 +40,3 @@ RUN echo "=== 查找 MPI 编译器 ===" && \
     rpm -qa | grep -i mpi && \
     echo "=== PATH 环境变量 ===" && \
     echo $PATH
-
-# 设置环境变量
-ENV PATH="/usr/lib64/openmpi/bin:/usr/local/bin:${PATH}"
-ENV LD_LIBRARY_PATH="/usr/lib64/openmpi/lib:/usr/local/lib:${LD_LIBRARY_PATH}"
-ENV CC=/usr/lib64/openmpi/bin/mpicc
-ENV CXX=/usr/lib64/openmpi/bin/mpic++
-ENV OMPI_ALLOW_RUN_AS_ROOT=1
-ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
