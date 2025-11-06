@@ -29,8 +29,12 @@ ENV CC=mpicc
 ENV CXX=mpic++
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-ENV SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp"
-ENV SITE_SPECIFIC_LIBS="-L/usr/lib"
+ENV SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp -I/usr/include"
+ENV SITE_SPECIFIC_LIBS="-L/usr/lib -L/usr/lib64"
+# 设置 Boost 相关环境变量
+ENV BOOST_ROOT=/usr
+ENV BOOST_INCLUDEDIR=/usr/include
+ENV BOOST_LIBRARYDIR=/usr/lib64
 
 # 创建符号链接并更新库缓存
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake && \
