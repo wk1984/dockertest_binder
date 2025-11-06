@@ -32,14 +32,13 @@ RUN yum update -y && \
         glibc-common && \
     yum clean all && \
     rm -rf /var/cache/yum
-    
-    
+
 # 安装新版boost
 RUN wget https://archives.boost.io/release/1.74.0/source/boost_1_74_0.tar.gz && \
     tar -zxvf boost_1_74_0.tar.gz && \
     cd boost_1_74_0 && \
     ./bootstrap.sh --prefix=/usr/local --with-libraries=all && \
-    ./b2 -j$(nproc) install
+    ./b2 install
 
 # 设置环境变量（不使用变量扩展）
 ENV PATH=/usr/lib64/openmpi/bin:/usr/bin
@@ -50,10 +49,6 @@ ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 ENV SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp -I/usr/include -I/usr/local/include -I/usr/include/lapacke/"
 ENV SITE_SPECIFIC_LIBS="-L/usr/lib -L/usr/lib64 -L/usr/include/lib"
-# 设置 Boost 相关环境变量
-ENV BOOST_ROOT=/usr
-ENV BOOST_INCLUDEDIR=/usr/local/include
-ENV BOOST_LIBRARYDIR=/usr/local/lib64
 
 # 创建符号链接并更新库缓存
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake && \
