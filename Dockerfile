@@ -1,5 +1,9 @@
 FROM centos:centos7.9.2009
 
+# 修复 CentOS 7 的 yum 源问题
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org/centos|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo
+
 # 设置环境变量
 ENV TZ=Etc/UTC
 ENV NETCDF=/usr
