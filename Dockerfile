@@ -70,7 +70,7 @@ RUN git clone --depth 1 -b v0.8.3 \
 
 # 编译模型
 WORKDIR /opt/dvm-dos-tem
-RUN make USEMPI=true CC=mpicxx
+RUN make USEMPI=true CC=mpic++
 
 # 设置工作目录
 WORKDIR /workspace
