@@ -34,4 +34,9 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs \
+    && mamba install ipykernel -c conda-forge \
     && python -V
+    
+RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
+RUN usermod -aG sudo user
+USER user
