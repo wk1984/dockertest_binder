@@ -56,6 +56,13 @@ RUN yum update -y && \
 # 更新动态库
 RUN ldconfig
 
+# 验证 MPI 编译器
+RUN echo "检查 MPI 编译器:" && \
+    ls -la /usr/lib64/openmpi/bin/ && \
+    which mpicc && \
+    which mpic++ && \
+    mpicc --version
+
 # 克隆 dvm-dos-tem 仓库
 RUN git clone --depth 1 -b v0.8.3 \
         https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
