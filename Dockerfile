@@ -38,5 +38,5 @@ RUN . /root/.bashrc \
     && python -V
     
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
-RUN usermod -aG sudo user
+
 USER user
