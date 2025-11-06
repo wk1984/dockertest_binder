@@ -17,66 +17,18 @@ ENV F77=mpif77
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-# 安装所有依赖（使用 CentOS 7 默认版本）
+# 安装基础工具
 RUN yum update -y && \
     yum install -y epel-release && \
+    sed -i 's|^metalink|#metalink|g' /etc/yum.repos.d/epel.repo && \
+    sed -i 's|^#baseurl|baseurl|g' /etc/yum.repos.d/epel.repo && \
     yum groupinstall -y "Development Tools" && \
     yum install -y \
-        wget \
-        curl \
-        git \
-        cmake \
-        doxygen \
-        graphviz \
-        gdb \
-        gdbserver \
-        nano \
-        openssl-devel \
-        bzip2-devel \
-        xz-devel \
-        libffi-devel \
-        sqlite-devel \
-        tk-devel \
-        zlib-devel \
-        readline-devel \
-        ncurses-devel \
-        geos-devel \
-        lapack-devel \
-        lapacke-devel \
-        boost-devel \
-        jsoncpp-devel \
-        openmpi-devel \
-        hdf5-openmpi-devel \
-        netcdf-openmpi-devel \
-        time \
-        autoconf automake libtool pkgconfig && \
+        wget curl git cmake3 gcc gcc-c++ gcc-gfortran \
+        openmpi-devel openmpi \
+        boost-devel jsoncpp-devel \
+        hdf5-openmpi-devel netcdf-openmpi-devel \
+        lapack-devel lapacke-devel geos-devel \
+        autoconf automake libtool && \
     yum clean all && \
     rm -rf /var/cache/yum
-
-# 更新动态库
-RUN ldconfig
-
-# 验证 MPI 编译器
-RUN echo "检查 MPI 编译器:" && \
-    ls -la /usr/lib64/openmpi/bin/ && \
-    which mpicc && \
-    which mpic++ && \
-    mpicc --version
-
-# 克隆 dvm-dos-tem 仓库
-RUN git clone --depth 1 -b v0.8.3 \
-        https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
-        /opt/dvm-dos-tem
-
-# 编译模型
-WORKDIR /opt/dvm-dos-tem
-RUN make USEMPI=true CC=mpic++
-
-# 设置工作目录
-WORKDIR /workspace
-
-# 验证安装
-RUN echo "验证安装:" && \
-    which mpicc && \
-    which mpicxx && \
-    mpicxx --version
