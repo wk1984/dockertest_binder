@@ -1,15 +1,26 @@
 FROM centos:centos7.9.2009
 
-# 使用阿里云镜像源
+# 导入对应源的GPG密钥
+RUN rpm --import https://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+
+# RUN curl -o /etc/yum.repos.d/CentOS-Base.repo HTTPS://mirrors.aliyun.com/repo/Centos-7.repo
+
+# RUN curl -o  /etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-7-anon.repo
 RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo && \
-    curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo && \
+    yum clean all && \
     yum makecache
+
+# 使用阿里云镜像源
+# RUN sed -e "s|^mirrorlist=|#mirrorlist=|g" \
+#     -e "s|^#baseurl=http://mirror.centos.org/centos/\$releasever|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.9|g" \
+#     -e "s|^#baseurl=http://mirror.centos.org/\$contentdir/\$releasever|baseurl=https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.9|g" \
+#     -i.bak \
+#     /etc/yum.repos.d/CentOS-*.repo && \
+#     yum makecache
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
     yum install -y epel-release && \
-    sed -i 's|^metalink|#metalink|g' /etc/yum.repos.d/epel.repo && \
-    sed -i 's|^#baseurl|baseurl|g' /etc/yum.repos.d/epel.repo && \
     yum groupinstall -y "Development Tools" && \
     yum install -y \
         wget curl git cmake3 \
