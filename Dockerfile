@@ -48,3 +48,4 @@ RUN git clone --depth 1 -b v0.8.3 https://gh-proxy.com/https://github.com/uaf-ar
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 
 USER user
+WORKDIR /work
