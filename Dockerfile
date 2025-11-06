@@ -5,7 +5,7 @@ RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Cen
     curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo && \
     yum makecache
 
-# 安装所有依赖
+# 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
     yum install -y epel-release && \
     sed -i 's|^metalink|#metalink|g' /etc/yum.repos.d/epel.repo && \
@@ -17,7 +17,8 @@ RUN yum update -y && \
         boost-devel jsoncpp-devel \
         hdf5-openmpi-devel netcdf-openmpi-devel \
         lapack-devel lapacke-devel geos-devel \
-        autoconf automake libtool && \
+        autoconf automake libtool \
+        glibc-common && \
     yum clean all && \
     rm -rf /var/cache/yum
 
@@ -29,9 +30,9 @@ ENV CXX=mpic++
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-# 创建符号链接
+# 创建符号链接并更新库缓存
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake && \
-    ldconfig
+    /sbin/ldconfig
 
 # 克隆和编译
 RUN git clone --depth 1 -b v0.8.3 \
