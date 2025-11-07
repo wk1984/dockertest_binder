@@ -12,6 +12,7 @@ RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Cen
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 ARG DEBIAN_FRONTEND=noninteractive
+ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
@@ -36,7 +37,7 @@ RUN . /root/.bashrc \
     && conda info --envs
 	
 RUN . /root/.bashrc \ 
-    && mamba create -n py39_cu11 -c conda-forge python==3.9.* ipykernel ipywidgets cartopy hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
+    && mamba create -n py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
     && conda activate py39_cu11 \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
     && python -V \
