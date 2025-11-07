@@ -11,6 +11,7 @@ RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Cen
 # 设置环境变量，允许 root 用户运行 MPI
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+ARG DEBIAN_FRONTEND=noninteractive
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
@@ -32,9 +33,11 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
-    && conda info --envs \
+    && conda info --envs
+	
+RUN . /root/.bashrc \ 
     && mamba create -n py39_cu11 -c conda-forge python==3.9.* ipykernel ipywidgets cartopy hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
-    && mamba activate py39_cu11 \
+    && conda activate py39_cu11 \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
     && python -V \
     && python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), tf.config.list_physical_devices('GPU'))"
@@ -43,5 +46,3 @@ RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 
 USER user
 WORKDIR /work
-
-RUN conda activate py39_cu11
