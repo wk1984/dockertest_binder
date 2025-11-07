@@ -14,8 +14,7 @@ ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
-    yum install -y \
-        wget curl git cmake3 which  \
+    yum install -y wget curl git cmake3 which  \
     yum clean all && \
     rm -rf /var/cache/yum
     
@@ -30,17 +29,10 @@ RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/23.1
     && echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
 ENV PATH=/opt/miniconda3/bin:${PATH}
-ENV SITE_SPECIFIC_INCLUDES="-I/opt/miniconda3/include/"
-ENV LD_LIBRARY_PATH=/opt/miniconda3/lib:$LD_LIBRARY_PATH
-ENV PATH="/opt/dvm-dos-tem:$PATH"
-ENV PATH="/opt/dvm-dos-tem/scripts:$PATH"
-ENV PATH="/opt/dvm-dos-tem/scripts/util:$PATH"
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
-    && conda info --envs
-
-RUN . /root/.bashrc \
+    && conda info --envs \
     && mamba create -n py39_cu11 -c conda-forge python==3.9.* ipykernel ipywidgets cartopy hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
     && mamba activate py39_cu11 \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
