@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: make a docker image to test dockerfile
 
 on:
   push:
@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: delete huge unnecessary tools folder
+      run: rm -rf /opt/hostedtoolcache
     - uses: actions/checkout@v4
+    - name: Login to Registry
+      run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag wk1984/dump
     - name: Push Image
