@@ -40,7 +40,8 @@ RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs
 
-RUN mamba create -n py39_cu11 -c conda-forge python==3.9.* ipykernel ipywidgets cartopy hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
+RUN . /root/.bashrc \
+    && mamba create -n py39_cu11 -c conda-forge python==3.9.* ipykernel ipywidgets cartopy hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.1.* numpy==1.* -y \
     && mamba activate py39_cu11 \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
     && python -V \
