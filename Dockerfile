@@ -62,6 +62,8 @@ RUN if [ "$deep4downscaling" = true ]; then \
 #	pip install git+https://github.com/wk1984/deep4downscaling.git@pack_codes; \
 	fi
 	
+RUN conda clean --all
+	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 RUN usermod -aG wheel user
 
