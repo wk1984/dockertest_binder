@@ -57,7 +57,7 @@ ARG deep4downscaling=true
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
-	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy scipy -y; \
+	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy scipy gcc -y; \
 	pip install xskillscore bottleneck torch==2.5.1 pandas; \
 	fi
 	
