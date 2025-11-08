@@ -44,7 +44,6 @@ RUN if [ "$DL4DS" = true ]; then \
     echo "install DL4DS ..."; \
     . /root/.bashrc; \ 
     mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
-	fi
     conda activate dl4ds_py39_cu11; \
     pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
     python -V; \
@@ -58,8 +57,8 @@ ARG deep4downscaling=true
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
-	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy scipy cudatoolkit==12.* cudnn==9.* pytorch==2.5.1 -y; \
-	pip install xskillscore bottleneck; \
+	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy scipy pandas -y; \
+	pip install xskillscore bottleneck torch==2.5.1; \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
