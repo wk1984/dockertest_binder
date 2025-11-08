@@ -49,7 +49,7 @@ RUN if [ "$DL4DS" ]; then \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
     && python -V \
     && python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), tf.config.list_physical_devices('GPU'))" \
-	&& python -c "import dl4ds as dds"
+	&& python -c "import dl4ds as dds" \
 	fi
    
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
