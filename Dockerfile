@@ -16,7 +16,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
-    yum install -y wget curl git cmake3 which gcc g++ \
+    yum install -y wget curl git cmake3 which \
     yum clean all && \
     rm -rf /var/cache/yum
     
@@ -37,7 +37,7 @@ RUN . /root/.bashrc \
     && conda info --envs
 	
 RUN . /root/.bashrc \ 
-    && mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y \
+    && mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* libstdcxx-ng xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y \
     && conda activate dl4ds_py39_cu11 \
     && pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
     && python -V \
