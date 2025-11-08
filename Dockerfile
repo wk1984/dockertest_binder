@@ -59,7 +59,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
 	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* jupyter xarray cartopy numpy scipy sympy pandas xskillscore bottleneck pytorch::pytorch==2.5.1 -y; \
-#	pip install git+https://github.com/wk1984/deep4downscaling.git@pack_codes; \
+ 	pip install git+https://github.com/wk1984/deep4downscaling.git@pack_codes; \
 	fi
 	
 RUN conda clean --all
