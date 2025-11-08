@@ -63,7 +63,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
-RUN usermod -aG sudo user
+RUN usermod -aG wheel user
 
 USER user
 WORKDIR /work
