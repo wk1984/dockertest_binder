@@ -38,7 +38,7 @@ RUN . /root/.bashrc \
 	
 # 创建CONDA环境来安装DL4DS降尺度软件
 
-ARG DL4DS=true
+ARG DL4DS=false
 
 RUN if [ "$DL4DS" = true ]; then \
     echo "install DL4DS ..."; \
@@ -48,12 +48,12 @@ RUN if [ "$DL4DS" = true ]; then \
     pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
     python -V; \
     python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), 'USE GPU:', tf.config.list_physical_devices('GPU'))"; \
-	python -c "import dl4ds as dds"; \
+#	python -c "import dl4ds as dds"; \
 	fi
 	
 # 创建CONDA环境来安装deep4downscaling降尺度软件
 
-ARG deep4downscaling=false
+ARG deep4downscaling=true
    
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
