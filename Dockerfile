@@ -43,13 +43,13 @@ ARG DL4DS=true
 
 RUN if [ "$DL4DS" ]; then \
     echo "install DL4DS ..." \
-    . /root/.bashrc \ 
-    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y \
-    conda activate dl4ds_py39_cu11 \
-    pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.* \
-    python -V \
-    python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), tf.config.list_physical_devices('GPU'))" \
-	python -c "import dl4ds as dds" \
+    . /root/.bashrc; \ 
+    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
+    conda activate dl4ds_py39_cu11; \
+    pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
+    python -V; \
+    python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), tf.config.list_physical_devices('GPU'))"; \
+	python -c "import dl4ds as dds"; \
 	fi
    
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
