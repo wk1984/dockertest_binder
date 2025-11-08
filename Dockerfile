@@ -58,7 +58,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
 	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy numpy scipy gcc pandas -y; \
-#	pip install xskillscore bottleneck torch==2.5.1 ; \
+ 	pip install xskillscore bottleneck torch==2.5.1 ; \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
