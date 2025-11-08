@@ -38,26 +38,28 @@ RUN . /root/.bashrc \
 	
 # 创建CONDA环境来安装DL4DS降尺度软件
 
-ARG DL4DS=false
+ARG DL4DS=true
 
 RUN if [ "$DL4DS" = true ]; then \
     echo "install DL4DS ..."; \
     . /root/.bashrc; \ 
-    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
+#    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
+    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn tensorflow-gpu==2.10.* numpy==1.* -y; \
     conda activate dl4ds_py39_cu11; \
-    pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
+#    pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
+    pip install dl4ds climetlab climetlab_maelstrom_downscaling; \
     python -V; \
     python -c "import tensorflow as tf; print('Built with CUDA:', tf.test.is_built_with_cuda(), 'USE GPU:', tf.config.list_physical_devices('GPU'))"; \
 	fi
 	
 # 创建CONDA环境来安装deep4downscaling降尺度软件
 
-ARG deep4downscaling=true
+ARG deep4downscaling=false
    
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
-	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy numpy scipy gcc pandas xskillscore bottleneck pytorch::pytorch==2.5.1 -y; \
+	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy numpy scipy pandas xskillscore bottleneck pytorch::pytorch==2.5.1 -y; \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
