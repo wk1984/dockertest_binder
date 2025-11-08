@@ -44,7 +44,7 @@ RUN if [ "$DL4DS" = true ]; then \
     echo "install DL4DS ..."; \
     . /root/.bashrc; \ 
 #    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
-    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn tensorflow==2.10.* tensorflow-gpu==2.10.* numpy==1.* -y; \
+    mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.2.* cudnn==8.* tensorflow==2.10.* tensorflow-gpu==2.10.* numpy==1.* -y; \
     conda activate dl4ds_py39_cu11; \
 #    pip install tensorflow==2.10.* dl4ds climetlab climetlab_maelstrom_downscaling numpy==1.*; \
     pip install dl4ds climetlab climetlab_maelstrom_downscaling; \
@@ -60,6 +60,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
 	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* xarray cartopy numpy scipy pandas xskillscore bottleneck pytorch::pytorch==2.5.1 -y; \
+	pip install git+https://github.com/wk1984/deep4downscaling.git@pack_codes; \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
