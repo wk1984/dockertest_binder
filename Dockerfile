@@ -64,8 +64,8 @@ RUN if [ "$deep4downscaling" = true ]; then \
 	
 RUN conda clean --all
 	
-RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
-RUN usermod -aG wheel user
+# RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
+# RUN usermod -aG wheel user
 
-USER user
-WORKDIR /work
+# USER user
+# WORKDIR /work
