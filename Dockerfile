@@ -16,7 +16,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
 # 安装所有依赖（一次性安装，减少层数）
 RUN yum update -y && \
-    yum install -y wget curl git cmake3 which \
+    yum install -y wget curl git cmake3 which sudo \
     yum clean all && \
     rm -rf /var/cache/yum
     
@@ -63,6 +63,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
 	fi
 	
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
+RUN usermod -aG sudo user
 
 USER user
 WORKDIR /work
