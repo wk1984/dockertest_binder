@@ -39,10 +39,10 @@ RUN . /root/.bashrc \
 	
 # 创建CONDA环境来安装DL4DS降尺度软件\
 
-ARG DL4DS=true
+ARG DL4DS=false
 
 RUN if [ "$DL4DS" ]; then \
-    echo "install DL4DS ..." \
+    echo "install DL4DS ..."; \
     . /root/.bashrc; \ 
     mamba create -n dl4ds_py39_cu11 -c conda-forge python==3.9.* xarray cartopy requests hdf5 h5py netCDF4 scikit-learn cudatoolkit==11.8.* cudnn==8.9.* numpy==1.* -y; \
     conda activate dl4ds_py39_cu11; \
