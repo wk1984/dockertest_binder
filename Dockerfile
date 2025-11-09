@@ -58,7 +58,7 @@ ARG deep4downscaling=true
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
-	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* meson<1.4 xarray cartopy numpy scipy sympy pandas xskillscore bottleneck pytorch::pytorch>=2.5.0 -y; \
+	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* cpython xarray cartopy numpy scipy sympy pandas xskillscore bottleneck pytorch::pytorch>=2.5.0 -y; \
 #	pip install pandas; \
 #	git clone -b pack_codes https://github.com/wk1984/deep4downscaling.git; \
 #	cd deep4downscaling
