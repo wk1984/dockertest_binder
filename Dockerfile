@@ -77,7 +77,7 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-lin
     && tar -zxf julia.tar.gz \ 
     && which julia \
     && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"' \
-    && julia -e 'using Pkg; Pkg.add("CUDA"); Pkg.add("IJulia")'
+    && julia -e 'using Pkg; Pkg.add("IJulia")'
 
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 RUN usermod -aG wheel user
