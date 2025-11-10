@@ -72,7 +72,8 @@ RUN conda clean --all
 
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
     && mv julia-1.10.10-linux-x86_64.tar.gz /opt/julia.tar.gz \
-    && cd /opt/
+    && cd /opt/ \
+    && tar -zxf julia.tar.gz
 #    && tar -zxf julia.tar.gz \
 #    && which julia
     	
