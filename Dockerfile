@@ -85,7 +85,10 @@ WORKDIR /work
 
 RUN which julia \
     && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"' \
-    && julia -e 'using Pkg; Pkg.add("IJulia")'
+    && julia -e 'using Pkg; Pkg.add("IJulia")' \
+    && julia -e 'using Pkg; Pkg.add("CUDA")' \
+    && julia -e 'using Pkg; Pkg.add("cuDNN")'
+    
 
 RUN jupyter-lab --version
 
