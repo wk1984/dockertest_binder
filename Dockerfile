@@ -89,7 +89,7 @@ RUN which julia \
     && julia -e 'using Pkg; Pkg.add("IJulia")' \
     && julia -e 'using Pkg; Pkg.add("CUDA")' \
     && julia -e 'using Pkg; Pkg.add("cuDNN")' \
-    && julia -e 'using Pkg; Pkg.add("NCDatasets")'
+    && julia -e 'using Pkg; Pkg.add("NCDatasets")' \
     && julia -e 'using Pkg; Pkg.add("PyPlot")' \
     && julia -e 'using Pkg; Pkg.add(url="https://github.com/gher-uliege/DINCAE.jl", rev="main")' \
     && julia -e 'using Pkg; Pkg.add(url="https://github.com/gher-uliege/DINCAE_utils.jl", rev="main")'
