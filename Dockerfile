@@ -76,7 +76,7 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-lin
     && cd /opt/ \
     && tar -zxf julia.tar.gz \ 
     && which julia \
-    && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"'
+    && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"' \
     && julia -e 'using Pkg; Pkg.add("CUDA"); Pkg.add("IJulia")'
     	
 
