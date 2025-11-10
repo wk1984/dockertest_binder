@@ -36,7 +36,8 @@ ENV PATH=/opt/julia-1.10.10/bin:${PATH}
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs \
-    && conda install jupyterlab -c conda-forge
+    && conda install jupyterlab -c conda-forge \
+    && which jupyter
 	
 # 创建CONDA环境来安装DL4DS降尺度软件
 
