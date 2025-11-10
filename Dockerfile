@@ -72,9 +72,9 @@ RUN conda clean --all
 
 RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/julia-releases/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz -O /opt/julia.tar.gz \
     && cd /opt \
-    && ls \
-    && tar -zxf julia.tar.gz \
-    && which julia
+    && ls
+#    && tar -zxf julia.tar.gz \
+#    && which julia
     	
 
 # RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
