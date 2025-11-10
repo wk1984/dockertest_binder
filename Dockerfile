@@ -78,10 +78,11 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-lin
     && which julia \
     && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"' \
     && julia -e 'using Pkg; Pkg.add("CUDA"); Pkg.add("IJulia")'
-    	
 
-# RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
-# RUN usermod -aG wheel user
+RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
+RUN usermod -aG wheel user
 
-# USER user
-# WORKDIR /work
+USER user
+WORKDIR /work
+
+RUN jupyterlab --version
