@@ -87,8 +87,9 @@ RUN which julia \
     && julia -e 'ENV["JUPYTER"]="/opt/miniconda3/bin/jupyter"' \
     && julia -e 'using Pkg; Pkg.add("IJulia")' \
     && julia -e 'using Pkg; Pkg.add("CUDA")' \
-    && julia -e 'using Pkg; Pkg.add("cuDNN")'
-    
+    && julia -e 'using Pkg; Pkg.add("cuDNN")' \
+    && julia -e 'using Pkg; Pkg.add(url="https://github.com/gher-uliege/DINCAE.jl", rev="main")' \
+    && julia -e 'using Pkg; Pkg.add(url="https://github.com/gher-uliege/DINCAE_utils.jl", rev="main")
 
 RUN jupyter-lab --version
 
