@@ -31,7 +31,7 @@ RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/23.1
     && echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
 ENV PATH=/opt/miniconda3/bin:${PATH}
-ENV PATH=/opt/julia/bin:${PATH}
+ENV PATH=/opt/julia-1.10.10/bin:${PATH}
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
@@ -73,9 +73,8 @@ RUN conda clean --all
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
     && mv julia-1.10.10-linux-x86_64.tar.gz /opt/julia.tar.gz \
     && cd /opt/ \
-    && tar -zxf julia.tar.gz \
-    && ls 
-#    && which julia
+    && tar -zxf julia.tar.gz \ 
+    && which julia
     	
 
 # RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
