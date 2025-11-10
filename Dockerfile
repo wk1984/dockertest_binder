@@ -74,7 +74,8 @@ RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-lin
     && mv julia-1.10.10-linux-x86_64.tar.gz /opt/julia.tar.gz \
     && cd /opt/ \
     && tar -zxf julia.tar.gz \ 
-    && which julia
+    && which julia \
+    && julia -e "using Pkg; Pkg.add("CUDA")"
     	
 
 # RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
