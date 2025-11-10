@@ -70,7 +70,7 @@ RUN if [ "$deep4downscaling" = true ]; then \
 	
 RUN conda clean --all
 
-RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/julia-releases/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
+RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz \
     && cd /opt \
     && mv ~/julia-1.10.10-linux-x86_64.tar.gz . \
     && ls
