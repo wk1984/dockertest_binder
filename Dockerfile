@@ -31,6 +31,7 @@ RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/23.1
     && echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
 ENV PATH=/opt/miniconda3/bin:${PATH}
+ENV PATH=/opt/julia/bin:${PATH}
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
@@ -53,12 +54,13 @@ RUN if [ "$DL4DS" = true ]; then \
 	
 # 创建CONDA环境来安装deep4downscaling降尺度软件
 
-ARG deep4downscaling=true
+ARG deep4downscaling=false
    
 RUN if [ "$deep4downscaling" = true ]; then \
     echo "install Deep4Downscaling ..."; \
     . /root/.bashrc; \
-	mamba create -n deep4downscaling_py311_cu12 -c conda-forge python==3.11.* pandas==2.0.3 xarray cartopy numpy scipy sympy xskillscore bottleneck pytorch::pytorch>=2.5.0 -y; \
+	mamba create -n deep4ds_py311_cu12 -c conda-forge python==3.11.* pandas==2.0.2 xarray cartopy numpy scipy sympy xskillscore bottleneck pytorch::pytorch>=2.5.0 -y; \
+	conda activate deep4ds_py311_cu12; \
 	pip install git+https://github.com/wk1984/deep4downscaling.git@pack_codes; \
 #	pip install pandas; \
 #	git clone -b pack_codes https://github.com/wk1984/deep4downscaling.git; \
@@ -67,7 +69,12 @@ RUN if [ "$deep4downscaling" = true ]; then \
 	fi
 	
 RUN conda clean --all
-	
+
+RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/julia-releases/bin/linux/x64/1.10/julia-1.10.10-linux-x86_64.tar.gz -O /opt/julia.tar.gz; \
+    cd /opt && tar -zxf julia.tar.gz; \
+    which julia
+    	
+
 # RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
 # RUN usermod -aG wheel user
 
