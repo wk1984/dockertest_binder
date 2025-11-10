@@ -85,4 +85,4 @@ RUN usermod -aG wheel user
 USER user
 WORKDIR /work
 
-RUN jupyterlab --version
+RUN jupyter-lab --version
