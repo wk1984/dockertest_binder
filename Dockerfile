@@ -86,3 +86,5 @@ USER user
 WORKDIR /work
 
 RUN jupyter-lab --version
+
+CMD ["jupyter-lab",  "--ip=0.0.0.0"  , "--no-browser"]
