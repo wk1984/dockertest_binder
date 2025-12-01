@@ -11,7 +11,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 #=============================================================================================
     
 RUN useradd -m -s /bin/bash user && echo "user:111" | chpasswd
-RUN usermod -aG wheel user
+RUN usermod -aG sudo user
 
 USER user
 WORKDIR /work
