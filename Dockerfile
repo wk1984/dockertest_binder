@@ -1,6 +1,6 @@
 FROM python:3.11
 
-RUN pip install jupyterlab
+RUN pip install jupyterlab tabpfn xgboost lightgbm scikit-learn pandas matplotlib seaborn
 	
 # 设置环境变量，允许 root 用户运行 MPI
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
