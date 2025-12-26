@@ -32,7 +32,7 @@ ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 #RUN pwd
 RUN git clone https://github.com/wk1984/torchclim.git
 
-RUN cd torchclim/torch-wrapper \
-    && ./env/install-deps.sh
+#RUN cd torchclim/torch-wrapper \
+#    && ./env/install-deps.sh
 #    && mkdir build \
 #    && ./build.sh
