@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     unzip \
-    gfortran \
+    # gfortran \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
