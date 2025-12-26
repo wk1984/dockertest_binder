@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
 
-# RUN which ifort
+RUN . /opt/intel/oneapi/setvars.sh
 
 # 1. 安装基础编译工具和依赖项
 RUN apt-get update && apt-get install -y \
@@ -23,10 +23,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置 LibTorch 环境变量
+ENV CXX=/opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64/icpc
 ENV SCRIPT_DIR=/root/
 ENV Torch_DIR=$SCRIPT_DIR/libtorch
 ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
-ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
+# ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 
 # 3. 克隆代码库
 #RUN pwd
