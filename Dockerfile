@@ -33,12 +33,15 @@ ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
 WORKDIR /app
 RUN git clone https://github.com/dudek313/torchclim.git .
 
+RUN cd torch-wrapper \
+    && ./build.sh
+
 # 4. 编译 TorchClim 插件
 # 这里主要编译的是共享库 (shared object)，它将被 GCM 调用
-RUN mkdir build && cd build \
-    && cmake -DCMAKE_PREFIX_PATH=$LIBTORCH_PATH .. \
-    && make -j$(nproc)
-
+# RUN mkdir build && cd build \
+#     && cmake -DCMAKE_PREFIX_PATH=$LIBTORCH_PATH .. \
+#     && make -j$(nproc)
+# 
 # 5. 设置运行环境
 # 为了方便后续 GIPL 或 CESM 链接，我们将库路径暴露出来
-ENV TORCHCLIM_LIB_PATH=/app/build
+# ENV TORCHCLIM_LIB_PATH=/app/build
