@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置 LibTorch 环境变量
+ENV SCRIPT_DIR=$HOME
 ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
 ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 
@@ -23,7 +24,6 @@ ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 RUN git clone https://github.com/dudek313/torchclim.git \
     && cd torchclim/torch-wrapper \
     && ./env/install-deps.sh \
-    && echo $SCRIPT_DIR
-#     && mkdir build \
-#     && cd build \
-#     && cmake -DCMAKE_PREFIX_PATH=$PATH_TO_LIBTORCH ..
+    && mkdir build \
+    && cd build \
+    && cmake -DCMAKE_PREFIX_PATH=$PATH_TO_LIBTORCH ..
