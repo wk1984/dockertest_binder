@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y \
 
 # 设置 LibTorch 环境变量
 ENV TORCH_PATH=/opt/libtorch
-ENV PATH_TO_LIBTORCH=/opt/libtorch
-ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
+ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
+ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 
 # 3. 克隆代码库
 RUN git clone https://github.com/dudek313/torchclim.git \
