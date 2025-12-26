@@ -27,6 +27,7 @@ RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-2.1
 
 # 设置 LibTorch 相关的环境变量，以便编译器能找到它
 ENV LIBTORCH_PATH=/opt/libtorch
+ENV PATH_TO_LIBTORCH=/opt/libtorch
 ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
 
 # 3. 克隆 TorchClim 源代码
