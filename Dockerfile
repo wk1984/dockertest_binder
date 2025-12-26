@@ -15,14 +15,9 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. 下载并安装 LibTorch (以 2.0.1 CPU 版本为例)
-# 注意：如果你的模型是用 GPU 训练的，建议下载对应的 CUDA 版本
-RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.0.1%2Bcpu.zip -O /tmp/libtorch.zip && \
-    unzip /tmp/libtorch.zip -d /opt/ && \
-    rm /tmp/libtorch.zip
-
 # 设置 LibTorch 环境变量
 ENV TORCH_PATH=/opt/libtorch
+ENV PATH_TO_LIBTORCH=/opt/libtorch
 ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
 
 # 3. 克隆代码库
