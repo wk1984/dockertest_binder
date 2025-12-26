@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 设置 LibTorch 环境变量
-ENV TORCH_PATH=/opt/libtorch
+ENV SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
 ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 
