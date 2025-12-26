@@ -1,49 +1,50 @@
-# 使用 Ubuntu 20.04 作为基础镜像，它对现代编译器支持良好
-FROM ubuntu:20.04
+# 使用 Ubuntu 作为基镜像
+FROM ubuntu:22.04
 
-# 设置环境变量，避免交互式安装提示
+# 设置环境变量，避免交互式安装时的提示
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 1. 安装系统级依赖
-# 包括：C++/Fortran 编译器 (GCM 开发必需)、CMake、MPI (并行计算需求)、Git、Wget 和解压工具
+# 1. 安装基础编译工具和依赖项
 RUN apt-get update && apt-get install -y \
     build-essential \
-    gfortran \
     cmake \
-    libopenmpi-dev \
     git \
     wget \
     unzip \
+    gfortran \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. 下载并安装 LibTorch (CPU 版本示例)
-# TorchClim 依赖 LibTorch 来执行 AI 模型的推理
-# 如果你有 GPU 需求，需要更换为支持 CUDA 的 LibTorch 链接
-WORKDIR /opt
-RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-2.1.0%2Bcpu.zip \
-    && unzip libtorch-shared-with-deps-2.1.0+cpu.zip \
-    && rm libtorch-shared-with-deps-2.1.0+cpu.zip
+# 2. 下载并安装 LibTorch (以 2.0.1 CPU 版本为例)
+# 注意：如果你的模型是用 GPU 训练的，建议下载对应的 CUDA 版本
+RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.0.1%2Bcpu.zip -O /tmp/libtorch.zip && \
+    unzip /tmp/libtorch.zip -d /opt/ && \
+    rm /tmp/libtorch.zip
 
-# 设置 LibTorch 相关的环境变量，以便编译器能找到它
-ENV LIBTORCH_PATH=/opt/libtorch
-ENV PATH_TO_LIBTORCH=/opt/libtorch
+# 设置 LibTorch 环境变量
+ENV TORCH_PATH=/opt/libtorch
 ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
 
-# 3. 克隆 TorchClim 源代码
+# 3. 克隆代码库
 WORKDIR /app
-RUN git clone https://github.com/dudek313/torchclim.git .
+RUN git clone https://github.com/dudek313/torchclim.git
 
-RUN cd torch-wrapper \
-    && mkdir build \
-    && ./build.sh
+WORKDIR /app/torchclim/torch-wrapper
 
-# 4. 编译 TorchClim 插件
-# 这里主要编译的是共享库 (shared object)，它将被 GCM 调用
-# RUN mkdir build && cd build \
-#     && cmake -DCMAKE_PREFIX_PATH=$LIBTORCH_PATH .. \
-#     && make -j$(nproc)
-# 
-# 5. 设置运行环境
-# 为了方便后续 GIPL 或 CESM 链接，我们将库路径暴露出来
-# ENV TORCHCLIM_LIB_PATH=/app/build
+# 4. 配置编译环境 (覆盖 load-env.sh)
+# 这里将编译器指向 GNU 版本的 gcc/gfortran
+RUN echo "export CC=gcc" > env/load-env.sh && \
+    echo "export CXX=g++" >> env/load-env.sh && \
+    echo "export FC=gfortran" >> env/load-env.sh && \
+    echo "export TORCH_PATH=/opt/libtorch" >> env/load-env.sh
+
+# 5. [重要] 编译前需要手动或通过 sed 修改模型路径
+# 假设你的模型在容器内的 /app/model.pt
+RUN sed -i 's|std::string script_path = .*|std::string script_path = "/app/model.pt";|' src/interface/torch-wrap.cpp
+
+# 6. 执行编译脚本
+# 注意：项目中的 build.sh 可能需要执行权限
+RUN chmod +x build.sh env/*.sh && \
+    ./build.sh
+
+# 编译完成后，生成的库文件通常位于 build/src/interface/libtorch-plugin.so
