@@ -34,6 +34,7 @@ WORKDIR /app
 RUN git clone https://github.com/dudek313/torchclim.git .
 
 RUN cd torch-wrapper \
+    && mkdir build && cd build \
     && ./build.sh
 
 # 4. 编译 TorchClim 插件
