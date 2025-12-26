@@ -28,4 +28,5 @@ ENV LD_LIBRARY_PATH=/opt/libtorch/lib:$LD_LIBRARY_PATH
 # 3. 克隆代码库
 RUN git clone https://github.com/dudek313/torchclim.git \
     && cd torchclim/torch-wrapper \
-    && ./env/install-deps.sh
+    && ./env/install-deps.sh \
+    && ./build.sh
