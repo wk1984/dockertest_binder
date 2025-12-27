@@ -39,7 +39,7 @@ ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/
 ENV LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
 
 # 验证安装
-RUN which ifort
+# RUN which ifort
 
 # 设置 LibTorch 环境变量
 ENV SCRIPT_DIR=/root/
