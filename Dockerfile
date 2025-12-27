@@ -46,12 +46,12 @@ RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRO
 
 # 4. 配置环境变量
 
-# ENV SCRIPT_DIR=/home/jovyan/torchclim/torch-wrapper/env
-# ENV Torch_DIR=$LIBTORCH_ROOT/libtorch
-# ENV PATH_TO_LIBTORCH=$LIBTORCH_ROOT
+ENV SCRIPT_DIR=/home/jovyan/torchclim/torch-wrapper/env
+ENV Torch_DIR=$SCRIPT_DIR/libtorch
+ENV PATH_TO_LIBTORCH=$LIBTORCH_ROOT
 # ENV CMAKE_PREFIX_PATH="$PATH_TO_LIBTORCH:$CMAKE_PREFIX_PATH"
 ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/compiler/latest/linux/bin:$PATH"
-# ENV LD_LIBRARY_PATH="$PATH_TO_LIBTORCH/lib:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$PATH_TO_LIBTORCH/lib:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
 
 # 切换回普通用户
 USER ${NB_USER}
