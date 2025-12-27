@@ -47,7 +47,7 @@ USER ${NB_USER}
 # RUN which ifort
 
 # 设置 LibTorch 环境变量
-ENV SCRIPT_DIR=/root/
+ENV SCRIPT_DIR=/home/jovyan/torchclim/torch-wrapper/env
 ENV Torch_DIR=$SCRIPT_DIR/libtorch
 ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
 # ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
@@ -56,7 +56,7 @@ ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
 #RUN pwd
 RUN git clone https://github.com/wk1984/torchclim.git
 
-#RUN cd torchclim/torch-wrapper \
-#    && ./env/install-deps.sh
+RUN cd torchclim/torch-wrapper \
+    && ./env/install-deps.sh
 #    && mkdir build \
 #    && ./build.sh
