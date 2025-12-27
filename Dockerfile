@@ -30,15 +30,22 @@ RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRO
     intel-oneapi-compiler-fortran \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
     
-# 3. 设置 Intel 环境变量 (非常重要！)
-# 在 Binder 中，通过 ENV 设置环境变量比 source vars.sh 更可靠
-ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/compiler/latest/linux/bin:$PATH"
-ENV LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
+# 3. 下载并安装 LibTorch (CPU 版本)
+# 这里以 LibTorch 2.1.0 为例，你可以根据需要更换版本号
+RUN wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.1.0%2Bcpu.zip -O /tmp/libtorch.zip \
+    && unzip /tmp/libtorch.zip -d /opt \
+    && rm /tmp/libtorch.zip
 
-# 4. 修复权限（Binder 要求 ${HOME} 目录对用户可见且可写）
-# ${NB_USER} 是 jupyter 镜像定义的变量，默认为 jovyan
-COPY . ${HOME}
-RUN chown -R ${NB_USER} ${HOME}
+# 4. 配置环境变量
+# Intel 路径
+ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/compiler/latest/linux/bin:$PATH"
+# LibTorch 路径
+ENV LIBTORCH_ROOT="/opt/libtorch"
+ENV CMAKE_PREFIX_PATH="/opt/libtorch:$CMAKE_PREFIX_PATH"
+ENV LD_LIBRARY_PATH="/opt/libtorch/lib:/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
+
+# 5. 修复权限
+RUN chown -R ${NB_USER} ${HOME} /opt/libtorch
 
 # 切换回普通用户
 USER ${NB_USER}
@@ -47,16 +54,16 @@ USER ${NB_USER}
 # RUN which ifort
 
 # 设置 LibTorch 环境变量
-ENV SCRIPT_DIR=/home/jovyan/torchclim/torch-wrapper/env
-ENV Torch_DIR=$SCRIPT_DIR/libtorch
-ENV PATH_TO_LIBTORCH=$SCRIPT_DIR/libtorch
+# ENV SCRIPT_DIR=/home/jovyan/torchclim/torch-wrapper/env
+ENV Torch_DIR=$LIBTORCH_ROOT
+ENV PATH_TO_LIBTORCH=$LIBTORCH_ROOT
 # ENV LD_LIBRARY_PATH=$PATH_TO_LIBTORCH/lib:$LD_LIBRARY_PATH
 
 # 3. 克隆代码库
 #RUN pwd
 RUN git clone https://github.com/wk1984/torchclim.git
 
-RUN cd torchclim/torch-wrapper \
-    && ./env/install-deps.sh
+# RUN cd torchclim/torch-wrapper
+#    && ./env/install-deps.sh
 #    && mkdir build \
 #    && ./build.sh
