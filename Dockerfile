@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # 1. 安装基础依赖
 RUN apt-get update && apt-get install -y \
-    wget \
+    wget git \
     gnupg \
     software-properties-common \
     build-essential \
