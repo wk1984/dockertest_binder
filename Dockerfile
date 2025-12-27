@@ -1,7 +1,9 @@
 # 使用 Ubuntu 作为基镜像
-FROM ubuntu:20.04
+FROM jupyter/base-notebook:ubuntu-20.04
 #FROM intel/oneapi-hpckit:2021.4-devel-ubuntu18.04
 #FROM intel/oneapi-hpckit:2022.3.1-devel-ubuntu20.04
+
+USER root
 
 # 设置环境变量，避免交互式安装时的提示
 ENV DEBIAN_FRONTEND=noninteractive
@@ -22,21 +24,24 @@ RUN apt-get update && apt-get install -y \
 RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
     | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null \
     && echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" \
-    | tee /etc/apt/sources.list.d/oneAPI.list
-
-# 3. 安装 Intel oneAPI 编译器组件
-# intel-oneapi-compiler-dpcpp-cpp: 包含 icx, icpx (C/C++)
-# intel-oneapi-compiler-fortran: 包含 ifx, ifort (Fortran)
-RUN apt-get update && apt-get install -y \
+    | tee /etc/apt/sources.list.d/oneAPI.list \
+    && apt-get update && apt-get install -y \
     intel-oneapi-compiler-dpcpp-cpp \
     intel-oneapi-compiler-fortran \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
     
-# 4. 配置环境变量
-# Intel 编译器需要加载特定的环境变量。
-# 我们可以通过设置 ENV 来永久生效，或者在启动时 source vars.sh
+# 3. 设置 Intel 环境变量 (非常重要！)
+# 在 Binder 中，通过 ENV 设置环境变量比 source vars.sh 更可靠
 ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/compiler/latest/linux/bin:$PATH"
 ENV LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH"
+
+# 4. 修复权限（Binder 要求 ${HOME} 目录对用户可见且可写）
+# ${NB_USER} 是 jupyter 镜像定义的变量，默认为 jovyan
+COPY . ${HOME}
+RUN chown -R ${NB_USER} ${HOME}
+
+# 切换回普通用户
+USER ${NB_USER}
 
 # 验证安装
 # RUN which ifort
