@@ -57,7 +57,7 @@ ENV PATH="/opt/intel/oneapi/compiler/latest/linux/bin/intel64:/opt/intel/oneapi/
 USER ${NB_USER}
 
 # 5. 修复权限
-RUN chown -R ${NB_USER} ${HOME} $PATH_TO_LIBTORCH/libtorch
+RUN chown -R ${NB_USER} ${HOME}
 
 # 3. 克隆代码库
 #RUN pwd
