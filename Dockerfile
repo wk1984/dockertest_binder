@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:python-3.9
+FROM jupyter/base-notebook:python-3.11
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -20,7 +20,7 @@ RUN apt-get -qq update && \
 RUN conda install mamba -y -n base -c conda-forge
 
 RUN mamba install -c conda-forge --override-channels -y \
-    cartopy hdf5 h5py netCDF4 scikit-learn \
+    cartopy hdf5 h5py netCDF4 scikit-learn && \
 #    cudatoolkit=11.2.* cudnn=8.1.* && \
 	conda clean --all -y
 
