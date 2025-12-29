@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:python-3.11
+FROM jupyter/base-notebook:python-3.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -24,7 +24,7 @@ RUN mamba install -c conda-forge --override-channels -y \
 #    cudatoolkit=11.2.* cudnn=8.1.* && \
 	conda clean --all -y
 
-RUN pip install tensorflow==2.12.* dl4ds numpy==1.* && \
+RUN pip install tensorflow==2.10.* dl4ds numpy==1.* && \
     rm -rf /tmp/* && \
     rm -rf ~/.cache/pip
     
