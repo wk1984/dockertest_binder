@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:python-3.11
+FROM jupyter/base-notebook:python-3.10
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
