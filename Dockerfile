@@ -21,6 +21,12 @@ RUN apt-get update -qqq && apt-get install -y --no-install-recommends -qqq \
     # libgeos-dev libproj-dev gdal-bin tk-dev \
     && rm -rf /var/lib/apt/lists/*
     
+RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem \
+    && cd /opt/dvm-dos-tem \
+    && make
+    
+ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:$PATH
+    
 USER jovyan
 
 RUN dvmdostem --sha
