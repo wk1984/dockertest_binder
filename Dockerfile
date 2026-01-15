@@ -28,12 +28,12 @@ RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm
 RUN pip install matplotlib==3.5.2 numpy==1.22.3 pandas==1.4.2 bokeh==2.4.2 netCDF4==1.5.8 commentjson==0.9.0 ipython==8.10.0 jupyter==1.0.0 lhsmdu==1.1 xarray==2023.1.* pypdf==5.1.* pytest==8.3.5
     
 ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH
+
+RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
     
 USER jovyan
 
 RUN dvmdostem --sha
-
-RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
 
 RUN setup_working_directory.py --input-data-path new work
 
