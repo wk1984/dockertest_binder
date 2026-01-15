@@ -24,6 +24,8 @@ RUN apt-get update -qqq && apt-get install -y --no-install-recommends -qqq \
 RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem \
     && cd /opt/dvm-dos-tem \
     && make
+
+RUN pip install matplotlib==3.5.2 numpy==1.22.3 pandas==1.4.2 bokeh==2.4.2 netCDF4==1.5.8 commentjson==0.9.0 ipython==8.10.0 jupyter==1.0.0 lhsmdu==1.1 xarray==2023.1.* pypdf==5.1.* pytest==8.3.5
     
 ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH
     
