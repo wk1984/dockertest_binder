@@ -25,8 +25,10 @@ RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm
     && cd /opt/dvm-dos-tem \
     && make
     
-ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:$PATH
+ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH
     
 USER jovyan
 
 RUN dvmdostem --sha
+
+CMD ["jupyter-lab" , "--ip=0.0.0.0", "--no-browser"]
