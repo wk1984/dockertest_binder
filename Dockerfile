@@ -66,6 +66,6 @@ RUN which julia
 
 RUN dvmdostem --sha
 
-RUN setup_working_directory.py --input-data-path new work
+#RUN setup_working_directory.py --input-data-path new work
 
 CMD ["jupyter-lab" , "--ip=0.0.0.0", "--no-browser"]
