@@ -33,6 +33,33 @@ RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_sta
     
 USER jovyan
 
+# 配置Julia+MADS
+
+ENV HOME=/home/jovyan
+ENV PYTHONPATH="/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/mads_calibration"
+ENV PATH="/opt/dvm-dos-tem/mads_calibration:$PATH"
+
+ENV JULIA_PKG_SERVER="https://mirrors.ustc.edu.cn/julia"
+ENV PATH=$HOME/julia-1.7.3/bin:$PATH
+
+RUN cd $HOME \
+    && wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
+#    && wget https://mirrors.tuna.tsinghua.edu.cn/julia-releases/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
+    && tar -xzf julia-1.7.3-linux-x86_64.tar.gz \
+    && rm julia-1.7.3-linux-x86_64.tar.gz
+    
+RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
+RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
+RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+RUN echo 'using Pkg; Pkg.add("YAML")' | julia
+RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
+
+RUN echo 'using Pkg; Pkg.gc()' | julia
+
+RUN which julia
+
 RUN dvmdostem --sha
 
 RUN setup_working_directory.py --input-data-path new work
