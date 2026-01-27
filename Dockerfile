@@ -58,6 +58,8 @@ RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
 
 RUN echo 'using Pkg; Pkg.gc()' | julia
 
+WORKDIR /work
+
 RUN which julia
 
 RUN dvmdostem --sha
