@@ -69,6 +69,7 @@ COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapack.so.3 /usr/lib/x86_64-lin
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libtmglib.so.3 /usr/lib/x86_64-linux-gnu/libtmglib.so.3
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libsz.so.2 /usr/lib/x86_64-linux-gnu/libsz.so.2
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libgfortran.so.5 /usr/lib/x86_64-linux-gnu/libgfortran.so.5
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libaec.so.0 /usr/lib/x86_64-linux-gnu/libaec.so.0
 
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
