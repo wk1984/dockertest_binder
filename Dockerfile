@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install jupyterhub
+RUN python3 -m pip install jupyterlab
 
 # 从编译阶段拷贝构建好的整个目录（包含二进制文件和脚本）
 COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
