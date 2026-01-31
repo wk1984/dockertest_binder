@@ -58,7 +58,7 @@ RUN julia -e 'using Pkg; \
         PackageSpec(name="Mads", version="1.3.10") \
     ]); \
     Pkg.precompile(); \
-    Pkg.gc();' && \
+    Pkg.gc();'
 
 RUN pip install commentjson
 
