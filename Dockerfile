@@ -1,73 +1,64 @@
-FROM jupyter/base-notebook:python-3.9
+# ==========================================
+# 第一阶段：编译 (Builder Stage)
+# ==========================================
+FROM ubuntu:24.04 AS builder
 
+# 避免交互式提示
 ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
-ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
+ENV SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp"
 
-USER root
+# 安装必要的编译工具
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    git \
+    libboost-all-dev \
+    libjsoncpp-dev \
+    liblapacke-dev \
+    libnetcdf-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Etc/UTC \
-	SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp" \
+# 克隆源码并编译
+WORKDIR /build
+RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
+    && cd dvm-dos-tem \
+    && make
+
+# ==========================================
+# 第二阶段：运行 (Runtime Stage)
+# ==========================================
+FROM ubuntu:24.04
+
+# 基础环境变量设置
+ENV TZ=Etc/UTC \
+    SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True \
+    PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-# 安装编译环境
-RUN apt-get update -qqq && apt-get install -y --no-install-recommends -qqq \
-    build-essential ca-certificates git nano curl wget sudo \
-    libboost-all-dev libjsoncpp-dev liblapacke-dev libnetcdf-dev \
-    libreadline-dev netcdf-bin libffi-dev libssl-dev libbz2-dev \
-    liblzma-dev libncurses5-dev libsqlite3-dev \
-    # libgeos-dev libproj-dev gdal-bin tk-dev \
+WORKDIR /opt/dvm-dos-tem
+
+# 1. 只安装运行所需的最小化运行时库
+# 2. 这里的包名针对 Ubuntu 24.04 进行了优化
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libboost-system1.83.0 \
+    libboost-filesystem1.83.0 \
+    libboost-program-options1.83.0 \
+    libjsoncpp25 \
+    liblapacke \
+    libnetcdf19 \
+    netcdf-bin \
+    ca-certificates \
+    sudo \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    
-RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem \
-    && cd /opt/dvm-dos-tem \
-    && make
 
-RUN pip install matplotlib==3.5.2 numpy==1.22.3 pandas==1.4.2 bokeh==2.4.2 netCDF4==1.5.8 commentjson==0.9.0 ipython==8.10.0 jupyter==1.0.0 lhsmdu==1.1 xarray==2023.1.* pypdf==5.1.* pytest==8.3.5
-    
-ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH
+# 从编译阶段拷贝构建好的整个目录（包含二进制文件和脚本）
+COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
 
-# RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
-    
-USER jovyan
+# 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
+RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
-# RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
+USER root
 
-# 配置Julia+MADS
-
-ENV HOME=/home/jovyan
-ENV PYTHONPATH="/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/mads_calibration"
-ENV PATH="/opt/dvm-dos-tem/mads_calibration:$PATH"
-
-ENV JULIA_PKG_SERVER="https://mirrors.ustc.edu.cn/julia"
-ENV PATH=$HOME/julia-1.7.3/bin:$PATH
-
-RUN cd $HOME \
-    && wget https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
-#    && wget https://mirrors.tuna.tsinghua.edu.cn/julia-releases/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
-    && tar -xzf julia-1.7.3-linux-x86_64.tar.gz \
-    && rm julia-1.7.3-linux-x86_64.tar.gz
-    
-RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
-RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-RUN echo 'using Pkg; Pkg.add("CSV")' | julia
-RUN echo 'using Pkg; Pkg.add("YAML")' | julia
-RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
-
-RUN echo 'using Pkg; Pkg.gc()' | julia
-
-WORKDIR /work
-
-RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
-
-RUN which julia
-
-RUN dvmdostem --sha
-
-#RUN setup_working_directory.py --input-data-path new work
-
-CMD ["jupyter-lab" , "--ip=0.0.0.0", "--no-browser"]
+CMD ["/bin/bash"]
