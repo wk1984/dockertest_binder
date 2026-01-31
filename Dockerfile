@@ -50,9 +50,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnetcdf19 \
     netcdf-bin \
     ca-certificates \
+    python3 python3-pip \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install jupyterhub
 
 # 从编译阶段拷贝构建好的整个目录（包含二进制文件和脚本）
 COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
@@ -60,6 +63,7 @@ COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
-USER root
+RUN which dvmdostem \
+    && dvmdostem --sha
 
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
