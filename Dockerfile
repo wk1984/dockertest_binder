@@ -39,9 +39,12 @@ ENV TZ=Etc/UTC \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-WORKDIR /opt/dvm-dos-tem
+# WORKDIR /opt/dvm-dos-tem
 
 USER root
+
+COPY --from=builder /usr/lib/liblapacke.so.3 /usr/lib/liblapacke.so.3
+# COPY --from=builder /usr/lib/liblapacke.so.3 /usr/lib/liblapacke.so.3
 
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
