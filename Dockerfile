@@ -47,7 +47,7 @@ USER root
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
-    libnetcdf-dev libboost-dev \
+    libnetcdf-dev libboost-all-dev \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
