@@ -43,15 +43,6 @@ ENV TZ=Etc/UTC \
 
 USER root
 
-COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libnetcdf.so.19 /usr/lib/x86_64-linux-gnu/libnetcdf.so.19
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25 /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25
-COPY --from=builder /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100 /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100
-
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -63,6 +54,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # 从编译阶段拷贝构建好的整个目录（包含二进制文件和脚本）
 COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
+
+COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libnetcdf.so.19 /usr/lib/x86_64-linux-gnu/libnetcdf.so.19
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25 /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100 /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103 /usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103
 
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
