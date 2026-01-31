@@ -43,7 +43,7 @@ ENV TZ=Etc/UTC \
 
 USER root
 
-COPY --from=builder /usr/lib/liblapacke.so.3 /usr/lib/liblapacke.so.3
+COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
 # COPY --from=builder /usr/lib/liblapacke.so.3 /usr/lib/liblapacke.so.3
 
 # 1. 只安装运行所需的最小化运行时库
