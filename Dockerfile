@@ -47,6 +47,8 @@ ENV TZ=Etc/UTC \
 
 USER root
 
+RUN pip install commentjson
+
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -79,12 +81,14 @@ COPY --from=builder /deps /usr
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/libaec.so.0 /usr/lib/x86_64-linux-gnu/libaec.so.0
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/libquadmath.so.0 /usr/lib/x86_64-linux-gnu/libquadmath.so.0
 
+RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
+
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
 RUN which dvmdostem \
     && dvmdostem --sha
-    
+   
 USER jovyan
 WORKDIR /work
 
