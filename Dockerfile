@@ -46,6 +46,7 @@ USER root
 COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libnetcdf.so.19 /usr/lib/x86_64-linux-gnu/libnetcdf.so.19
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0
 
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
