@@ -62,7 +62,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
 
 # 一次性拷贝所有依赖，不需要关心具体的版本号和文件名
-COPY --from=builder /deps /
+COPY --from=builder /deps /usr
 
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/libnetcdf.so.19 /usr/lib/x86_64-linux-gnu/libnetcdf.so.19
