@@ -7,6 +7,8 @@ FROM jupyter/julia-notebook:x86_64-python-3.11.6 AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 ENV SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp"
 
+USER root
+
 # 安装必要的编译工具
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -39,6 +41,8 @@ ENV TZ=Etc/UTC \
 
 WORKDIR /opt/dvm-dos-tem
 
+USER root
+
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -50,12 +54,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnetcdf19 \
     netcdf-bin \
     ca-certificates \
-    python3-full python3-pip python3-pipx \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-RUN python3 -m pip install jupyterlab
 
 # 从编译阶段拷贝构建好的整个目录（包含二进制文件和脚本）
 COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
