@@ -26,6 +26,12 @@ WORKDIR /build
 RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
     && cd dvm-dos-tem \
     && make
+    
+# 在 builder 阶段：自动搜集所有依赖库
+RUN mkdir -p /deps && \
+    ldd /build/dvm-dos-tem/dvmdostem | grep "=> /" | awk '{print $3}' | xargs -I '{}' cp -v --parents '{}' /deps
+    
+RUN ls /deps
 
 # ==========================================
 # 第二阶段：运行 (Runtime Stage)
