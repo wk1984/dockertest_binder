@@ -89,13 +89,28 @@ RUN which dvmdostem \
    
 USER jovyan
 
-RUN echo 'using Pkg; Pkg.add("Compose")' | julia
-RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
-RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-RUN echo 'using Pkg; Pkg.add("CSV")' | julia
-RUN echo 'using Pkg; Pkg.add("YAML")' | julia
+# 整合 Julia 包安装，确保在同一层内完成“安装-预编译-清理”
+RUN julia -e 'using Pkg; \
+    Pkg.add([ \
+        PackageSpec(name="Compose"), \
+        PackageSpec(name="Gadfly"), \
+        PackageSpec(name="DataFrames"), \
+        PackageSpec(name="DataStructures"), \
+        PackageSpec(name="CSV"), \
+        PackageSpec(name="YAML"), \
+        PackageSpec(name="Mads", version="1.3.10") \
+    ]); \
+    Pkg.precompile(); \
+    Pkg.gc();' && \
+    rm -rf /home/jovyan/.julia/registries /home/jovyan/.julia/logs /home/jovyan/.julia/scratchspaces
+
+# RUN echo 'using Pkg; Pkg.add("Compose")' | julia
+# RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
+# RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
+# RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+# RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+# RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+# RUN echo 'using Pkg; Pkg.add("YAML")' | julia
 
 WORKDIR /work
 
