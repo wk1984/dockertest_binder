@@ -81,8 +81,6 @@ COPY --from=builder /deps /usr
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/libaec.so.0 /usr/lib/x86_64-linux-gnu/libaec.so.0
 # COPY --from=builder /usr/lib/x86_64-linux-gnu/libquadmath.so.0 /usr/lib/x86_64-linux-gnu/libquadmath.so.0
 
-RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
@@ -90,6 +88,15 @@ RUN which dvmdostem \
     && dvmdostem --sha
    
 USER jovyan
+
+RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
+RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+RUN echo 'using Pkg; Pkg.add("YAML")' | julia
+RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
+RUN echo 'using Pkg; Pkg.add("Compose")' | julia
+
 WORKDIR /work
 
 # CMD ["/bin/bash"]
