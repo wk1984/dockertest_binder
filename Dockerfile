@@ -46,13 +46,6 @@ USER root
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libboost-system1.83.0 \
-    libboost-filesystem1.83.0 \
-    libboost-program-options1.83.0 \
-    libjsoncpp25 \
-    liblapacke \
-    libnetcdf19 \
-    netcdf-bin \
     ca-certificates \
     sudo \
     && apt-get clean \
