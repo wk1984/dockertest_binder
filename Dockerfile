@@ -49,6 +49,7 @@ COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 /usr
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
 COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25 /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25
 
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
