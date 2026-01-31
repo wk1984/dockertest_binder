@@ -50,7 +50,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnetcdf19 \
     netcdf-bin \
     ca-certificates \
-    python3-full python3-pip \
+    python3-full python3-pip python3-pipx \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
