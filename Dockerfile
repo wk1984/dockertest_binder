@@ -89,13 +89,13 @@ RUN which dvmdostem \
    
 USER jovyan
 
+RUN echo 'using Pkg; Pkg.add("Compose")' | julia
+RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
 RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
 RUN echo 'using Pkg; Pkg.add("CSV")' | julia
 RUN echo 'using Pkg; Pkg.add("YAML")' | julia
-RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
-RUN echo 'using Pkg; Pkg.add("Compose")' | julia
 
 WORKDIR /work
 
