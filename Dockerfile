@@ -1,7 +1,7 @@
 # ==========================================
 # 第一阶段：编译 (Builder Stage)
 # ==========================================
-FROM ubuntu:24.04 AS builder
+FROM jupyter/julia-notebook:x86_64-python-3.11.6 AS builder
 
 # 避免交互式提示
 ARG DEBIAN_FRONTEND=noninteractive
@@ -28,7 +28,7 @@ RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm
 # ==========================================
 # 第二阶段：运行 (Runtime Stage)
 # ==========================================
-FROM ubuntu:24.04
+FROM jupyter/julia-notebook:x86_64-python-3.11.6
 
 # 基础环境变量设置
 ENV TZ=Etc/UTC \
