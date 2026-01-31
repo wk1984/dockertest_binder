@@ -47,6 +47,19 @@ ENV TZ=Etc/UTC \
 
 USER root
 
+RUN julia -e 'using Pkg; \
+    Pkg.add([ \
+        PackageSpec(name="Compose"), \
+        PackageSpec(name="Gadfly"), \
+        PackageSpec(name="DataFrames"), \
+        PackageSpec(name="DataStructures"), \
+        PackageSpec(name="CSV"), \
+        PackageSpec(name="YAML"), \
+        PackageSpec(name="Mads", version="1.3.10") \
+    ]); \
+    Pkg.precompile(); \
+    Pkg.gc();' && \
+
 RUN pip install commentjson
 
 # 1. 只安装运行所需的最小化运行时库
@@ -88,22 +101,6 @@ RUN which dvmdostem \
     && dvmdostem --sha
    
 USER jovyan
-
-# 整合 Julia 包安装，确保在同一层内完成“安装-预编译-清理”
-RUN julia -e 'using Pkg; \
-    Pkg.add([ \
-        PackageSpec(name="Compose"), \
-        PackageSpec(name="Gadfly"), \
-        PackageSpec(name="DataFrames"), \
-        PackageSpec(name="DataStructures"), \
-        PackageSpec(name="CSV"), \
-        PackageSpec(name="YAML"), \
-        PackageSpec(name="Mads", version="1.3.10") \
-    ]); \
-    Pkg.precompile(); \
-    Pkg.gc();' && \
-    rm -rf /home/jovyan/.julia/registries 
-# /home/jovyan/.julia/logs /home/jovyan/.julia/scratchspaces
 
 # RUN echo 'using Pkg; Pkg.add("Compose")' | julia
 # RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
