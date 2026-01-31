@@ -102,7 +102,8 @@ RUN julia -e 'using Pkg; \
     ]); \
     Pkg.precompile(); \
     Pkg.gc();' && \
-    rm -rf /home/jovyan/.julia/registries /home/jovyan/.julia/logs /home/jovyan/.julia/scratchspaces
+    rm -rf /home/jovyan/.julia/registries 
+# /home/jovyan/.julia/logs /home/jovyan/.julia/scratchspaces
 
 # RUN echo 'using Pkg; Pkg.add("Compose")' | julia
 # RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
