@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     git \
     libboost-all-dev \
+    libreadline-dev \
     libjsoncpp-dev \
     liblapacke-dev \
     libnetcdf-dev \
