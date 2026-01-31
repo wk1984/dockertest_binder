@@ -29,9 +29,11 @@ RUN pip install matplotlib==3.5.2 numpy==1.22.3 pandas==1.4.2 bokeh==2.4.2 netCD
     
 ENV PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH
 
-RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
+# RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
     
 USER jovyan
+
+# RUN mv /opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 new
 
 # 配置Julia+MADS
 
@@ -66,6 +68,6 @@ RUN which julia
 
 RUN dvmdostem --sha
 
-RUN setup_working_directory.py --input-data-path new work
+#RUN setup_working_directory.py --input-data-path new work
 
 CMD ["jupyter-lab" , "--ip=0.0.0.0", "--no-browser"]
