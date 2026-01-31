@@ -45,8 +45,6 @@ ENV TZ=Etc/UTC \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-# WORKDIR /opt/dvm-dos-tem
-
 USER root
 
 # 1. 只安装运行所需的最小化运行时库
@@ -86,5 +84,8 @@ RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
 RUN which dvmdostem \
     && dvmdostem --sha
+    
+USER jovyan
+WORKDIR /work
 
 # CMD ["/bin/bash"]
