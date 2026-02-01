@@ -1,7 +1,7 @@
 # ==========================================
 # 第一阶段：编译 (Builder Stage)
 # ==========================================
-FROM jupyter/julia-notebook:x86_64-python-3.11.6 AS builder
+FROM quay.io/jupyter/julia-notebook AS builder
 
 # 避免交互式提示
 ARG DEBIAN_FRONTEND=noninteractive
@@ -36,7 +36,7 @@ RUN ls /deps
 # ==========================================
 # 第二阶段：运行 (Runtime Stage)
 # ==========================================
-FROM jupyter/julia-notebook:x86_64-python-3.11.6
+FROM quay.io/jupyter/julia-notebook
 
 # 基础环境变量设置
 ENV TZ=Etc/UTC \
