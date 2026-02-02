@@ -1,4 +1,4 @@
-FROM dvmdostem:v0.8.3
+FROM wk1984/dvmdostem:v0.8.3
 
 RUN which dvmdostem \
     && dvmdostem --sha
