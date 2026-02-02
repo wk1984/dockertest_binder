@@ -27,6 +27,9 @@ RUN git clone --depth 1 -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm
     && cd dvm-dos-tem \
     && make
     
+# 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
+# RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
+
 # 在 builder 阶段：自动搜集所有依赖库
 RUN mkdir -p /deps && \
     ldd /build/dvm-dos-tem/dvmdostem | grep "=> /" | awk '{print $3}' | xargs -I '{}' cp -v --parents '{}' /deps
@@ -45,7 +48,7 @@ ENV TZ=Etc/UTC \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-USER root
+USER jovyan
 
 RUN julia -e 'using Pkg; \
     Pkg.add([ \
@@ -63,6 +66,8 @@ RUN julia -e 'using Pkg; \
 
 RUN pip install commentjson
 
+USER root
+
 # 1. 只安装运行所需的最小化运行时库
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -76,9 +81,6 @@ COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
 
 # 一次性拷贝所有依赖，不需要关心具体的版本号和文件名
 COPY --from=builder /deps /usr
-
-# 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
-RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
 RUN which dvmdostem \
     && dvmdostem --sha
