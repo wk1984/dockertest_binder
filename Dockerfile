@@ -46,7 +46,8 @@ ENV TZ=Etc/UTC \
     SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True \
     PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:$PATH \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
-    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+    OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
+    JULIA_PKG_SERVER=https://mirrors.pku.edu.cn/julia
 
 USER jovyan
 
