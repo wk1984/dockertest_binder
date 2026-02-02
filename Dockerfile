@@ -1,7 +1,7 @@
 # ==========================================
 # 第一阶段：编译 (Builder Stage)
 # ==========================================
-FROM quay.io/jupyter/julia-notebook AS builder
+FROM jupyter/julia-notebook:x86_64-julia-1.9.3 AS builder
 
 # 避免交互式提示
 ARG DEBIAN_FRONTEND=noninteractive
@@ -36,7 +36,7 @@ RUN ls /deps
 # ==========================================
 # 第二阶段：运行 (Runtime Stage)
 # ==========================================
-FROM quay.io/jupyter/julia-notebook
+FROM jupyter/julia-notebook:x86_64-julia-1.9.3
 
 # 基础环境变量设置
 ENV TZ=Etc/UTC \
@@ -50,7 +50,8 @@ USER root
 RUN julia -e 'using Pkg; \
     Pkg.add([ \
         PackageSpec(name="Compose"), \
-        PackageSpec(name="Gadfly"), \
+        PackageSpec(name="Gadfly", version="1.4.1"), \
+        PackageSpec(name="OrdinaryDiffEq", version="6.66.0"), \
         PackageSpec(name="DataFrames"), \
         PackageSpec(name="DataStructures"), \
         PackageSpec(name="CSV"), \
@@ -66,7 +67,6 @@ RUN pip install commentjson
 # 2. 这里的包名针对 Ubuntu 24.04 进行了优化
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
-# libnetcdf-dev libboost-all-dev libjsoncpp-dev \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -77,23 +77,6 @@ COPY --from=builder /build/dvm-dos-tem /opt/dvm-dos-tem
 # 一次性拷贝所有依赖，不需要关心具体的版本号和文件名
 COPY --from=builder /deps /usr
 
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapacke.so.3 /usr/lib/x86_64-linux-gnu/liblapacke.so.3
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libnetcdf.so.19 /usr/lib/x86_64-linux-gnu/libnetcdf.so.19
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.74.0
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.74.0
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0 /usr/lib/x86_64-linux-gnu/libboost_log.so.1.74.0
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25 /usr/lib/x86_64-linux-gnu/libjsoncpp.so.25
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100 /usr/lib/x86_64-linux-gnu/libhdf5_serial_hl.so.100
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103 /usr/lib/x86_64-linux-gnu/libhdf5_serial.so.103
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libblas.so.3 /usr/lib/x86_64-linux-gnu/libblas.so.3
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/liblapack.so.3 /usr/lib/x86_64-linux-gnu/liblapack.so.3
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libtmglib.so.3 /usr/lib/x86_64-linux-gnu/libtmglib.so.3
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libsz.so.2 /usr/lib/x86_64-linux-gnu/libsz.so.2
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libgfortran.so.5 /usr/lib/x86_64-linux-gnu/libgfortran.so.5
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libaec.so.0 /usr/lib/x86_64-linux-gnu/libaec.so.0
-# COPY --from=builder /usr/lib/x86_64-linux-gnu/libquadmath.so.0 /usr/lib/x86_64-linux-gnu/libquadmath.so.0
-
 # 删除构建过程中产生的中间目标文件 (.o) 以进一步瘦身
 RUN find /opt/dvm-dos-tem -name "*.o" -type f -delete
 
@@ -101,14 +84,6 @@ RUN which dvmdostem \
     && dvmdostem --sha
    
 USER jovyan
-
-# RUN echo 'using Pkg; Pkg.add("Compose")' | julia
-# RUN echo 'using Pkg; Pkg.add("Gadfly")' | julia
-# RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-# RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-# RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-# RUN echo 'using Pkg; Pkg.add("CSV")' | julia
-# RUN echo 'using Pkg; Pkg.add("YAML")' | julia
 
 WORKDIR /work
 
