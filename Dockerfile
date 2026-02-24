@@ -32,8 +32,8 @@ ENV LD_LIBRARY_PATH=${ATS_DIR}/lib:$LD_LIBRARY_PATH
 ENV LD_LIBRARY_PATH=${AMANZI_DIR}/lib:$LD_LIBRARY_PATH
 ENV LD_LIBRARY_PATH=${AMANZI_TPLS_DIR}/trilinos-12-12-1/lib:${AMANZI_TPLS_DIR}/SEACAS/lib:${AMANZI_TPLS_DIR}/lib:${LD_LIBRARY_PATH}
 
-RUN sed -i 's@http://.*archive.ubuntu.com@http://mirrors.aliyun.com/@g' /etc/apt/sources.list
-RUN sed -i 's@http://.*security.ubuntu.com@http://mirrors.aliyun.com/@g' /etc/apt/sources.list
+#RUN sed -i 's@http://.*archive.ubuntu.com@http://mirrors.aliyun.com/@g' /etc/apt/sources.list
+#RUN sed -i 's@http://.*security.ubuntu.com@http://mirrors.aliyun.com/@g' /etc/apt/sources.list
 
 RUN apt-get update -y \
     && apt-get install -y openmpi-bin ca-certificates build-essential \
@@ -53,8 +53,8 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py \
 RUN pip install numpy h5py pandas matplotlib seaborn ipykernel notebook Send2Trash==1.8.3
 
 RUN cd ${ATS_BASE} \
-    && git clone --depth 1 -b amanzi-0.88 https://gh-proxy.org/https://github.com/amanzi/amanzi $AMANZI_SRC_DIR \
-    && git clone --depth 1 -b ats-0.88 https://gh-proxy.org/https://github.com/amanzi/ats $ATS_SRC_DIR
+    && git clone --depth 1 -b amanzi-0.88 https://github.com/amanzi/amanzi $AMANZI_SRC_DIR \
+    && git clone --depth 1 -b ats-0.88 https://github.com/amanzi/ats $ATS_SRC_DIR
 
 RUN . ${ATS_SRC_DIR}/amanzi_bootstrap.sh
 
