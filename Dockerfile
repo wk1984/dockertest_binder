@@ -22,20 +22,20 @@ ENV PATH=${ATS_DIR}/bin:${AMANZI_TPLS_DIR}/bin:${PATH}
 ENV PYTHONPATH=${ATS_SRC_DIR}/tools/utils:${AMANZI_TPLS_DIR}/SEACAS/lib:${AMANZI_SRC_DIR}/tools/amanzi_xml:${PYTHONPATH}
 ENV LD_LIBRARY_PATH ${ATS_DIR}/lib:${AMANZI_TPLS_DIR}/trilinos-13-0-afc4e525/lib:${AMANZI_TPLS_DIR}/SEACAS/lib:${AMANZI_TPLS_DIR}/lib:${LD_LIBRARY_PATH}
 
-RUN sed -i 's@http://.*archive.ubuntu.com@https://mirrors.aliyun.com/@g' /etc/apt/sources.list
-RUN sed -i 's@http://.*security.ubuntu.com@https://mirrors.aliyun.com/@g' /etc/apt/sources.list
+#RUN sed -i 's@http://.*archive.ubuntu.com@https://mirrors.aliyun.com/@g' /etc/apt/sources.list
+#RUN sed -i 's@http://.*security.ubuntu.com@https://mirrors.aliyun.com/@g' /etc/apt/sources.list
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends wget make m4 patch build-essential ca-certificates cmake openmpi-bin libopenmpi-dev \
 	   liblapack-dev libblas-dev liblapack3 libblas3 git g++ gcc gfortran curl libcurl4-openssl-dev \
 	   nano openssh-server zlib1g-dev libjpeg-dev \
-#    && apt-get install -y --no-install-recommends python3 python3-dev python3-numpy \
+    && apt-get install -y --no-install-recommends python3 python3-dev python3-numpy \
 #     && apt-get install -y --no-install-recommends python3-setuptools python3-setuptools-scm python3-cffi python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
     
-# RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 RUN mkdir -p ${ATS_BASE} \
     && mkdir -p ${ATS_BASE}/amanzi-tpls/Downloads/ \
