@@ -33,5 +33,4 @@ RUN apt-get update && apt-get install -y \
 	
 RUN mkdir -p ${ATS_BASE}/amanzi-tpls/Downloads/ && \
     cd ${ATS_BASE} && \
-    git clone -b amanzi-1.5 http://github.com/amanzi/amanzi $AMANZI_SRC_DIR && \
-    /bin/bash ${AMANZI_SRC_DIR}/build_ATS_generic.sh
+    git clone -b amanzi-1.5 http://github.com/amanzi/amanzi $AMANZI_SRC_DIR
