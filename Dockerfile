@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     wget make m4 patch build-essential cmake curl nano \
     openmpi-bin libopenmpi-dev liblapack-dev libblas-dev liblapack3 libblas3 \
     git g++ gcc gfortran libcurl4-openssl-dev openssh-server zlib1g-dev libjpeg-dev \
-    python3-numpy \
+    python3-numpy python3-ipykernel \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 	
