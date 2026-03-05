@@ -1,5 +1,3 @@
 FROM jupyterhub/jupyterhub:5.3
 
-USER root
-
-RUN apt-get update
+RUN git clone -b v2.0 https://github.com/environmental-modeling-workflows/watershed-workflow.git
