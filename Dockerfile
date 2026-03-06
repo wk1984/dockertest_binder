@@ -12,6 +12,8 @@ RUN apt-get update -y \
 
 RUN conda install -c conda-forge -y numpy matplotlib scipy sqlite geopandas xarray dask rioxarray requests sortedcontainers attrs h5py cftime nc-time-axis pytest mypy nbmake ipympl ipython ipykernel pynhd "pygeohydro>0.18" py3dep s3fs zarr jupyterlab jupyterlab_widgets "notebook<7.0.0" nb_conda nb_conda_kernels papermill gitpython pandas netCDF4 \
      && conda clean --all
+     
+USER ww
 
 #RUN which python
 	
