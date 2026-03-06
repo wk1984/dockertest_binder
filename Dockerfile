@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ENV PATH=opt/miniforge/bin:${PATH}
+ENV PATH=/opt/miniforge/bin:${PATH}
 
 RUN apt-get update -y \
     && apt-get install wget git nano -y \
