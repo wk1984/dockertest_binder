@@ -1,2 +1,2 @@
 #FROM ubuntu:22.04
-FROM pshuai/ats_workflow:v1.5
+FROM ecoon/watershed_workflow-ats:v2.0
