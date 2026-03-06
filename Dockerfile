@@ -1,5 +1,5 @@
 #FROM ubuntu:22.04
-FROM condaforge/miniforge3:23.11.0-0
+FROM pshuai/ats_workflow:v1.5
 
 # ENV PATH=/opt/miniforge/bin:${PATH}
 
