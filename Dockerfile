@@ -65,7 +65,7 @@ RUN . /root/.bashrc \
 
 # configure Python packages ==========
 
-RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
+RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask netcdf4 h5py pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
     geopandas rasterio sqlite==3.51 rioxarray py3dep pygeohydro s3fs colorama libprotobuf==6.31.1 -y \
     && conda clean --all
 	
