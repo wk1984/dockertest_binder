@@ -51,7 +51,7 @@ RUN mkdir -p ${ATS_BASE}/amanzi-tpls/Downloads/ && \
 
 # install python pkgs ==========
 
-RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py312_26.1.1-1-Linux-x86_64.sh -O ~/miniforge.sh \
+RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/24.11.0-0/Mambaforge-24.11.0-0-Linux-x86_64.sh -O ~/miniforge.sh \
     && /bin/bash ~/miniforge.sh -b -p /opt/miniforge \
     && rm ~/miniforge.sh \
     && ln -s /opt/miniforge/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
@@ -65,7 +65,7 @@ RUN . /root/.bashrc \
 
 # configure Python packages ==========
 
-RUN conda install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
+RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
     geopandas rasterio sqlite==3.51 rioxarray py3dep pygeohydro s3fs colorama libprotobuf==6.31.1 -y \
     && conda clean --all
 	
