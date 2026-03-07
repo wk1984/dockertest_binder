@@ -59,8 +59,8 @@ RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/24.1
 
 RUN . /root/.bashrc \
     && /opt/miniforge/bin/conda init bash \
-	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
+#	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
+#	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
     && conda info --envs
 
 # configure Python packages ==========
