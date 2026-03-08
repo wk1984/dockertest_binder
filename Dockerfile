@@ -5,7 +5,8 @@ RUN apt-get update -y \
 
 # install python pkgs ==========
 
-RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py311_23.10.0-1-Linux-x86_64.sh -O ~/miniforge.sh \
+# RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py311_23.10.0-1-Linux-x86_64.sh -O ~/miniforge.sh \
+RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py312_26.1.1-1-Linux-x86_64.sh -O ~/miniforge.sh \
     && /bin/bash ~/miniforge.sh -b -p /opt/miniforge \
     && rm ~/miniforge.sh \
     && ln -s /opt/miniforge/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
