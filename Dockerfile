@@ -1,7 +1,7 @@
 FROM wk1984/ats_dev:v1.6.0
 
-RUN apt-get update \
-    && apt-get install sqlite3 language-pack-en
+RUN apt-get update -y \
+    && apt-get install sqlite3 language-pack-en -y
 
 # install python pkgs ==========
 
