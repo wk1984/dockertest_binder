@@ -71,13 +71,13 @@ RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib sea
     geopandas rasterio sqlite rioxarray py3dep pygeohydro s3fs colorama libprotobuf -y \
     && conda clean --all
 	
-#RUN cd ${AMANZI_SRC_DIR}/tools/amanzi_xml && python setup.py install
-#RUN pip install rosetta-soil==0.1.2
-#RUN git clone -b v2.0 --depth 1 https://github.com/environmental-modeling-workflows/watershed-workflow /opt/watershed-workflow
-#RUN git clone -b ats-input-spec-1.6 --depth 1 https://github.com/ecoon/ats_input_spec /opt/ats_input_spec
+RUN cd ${AMANZI_SRC_DIR}/tools/amanzi_xml && python setup.py install
+RUN pip install rosetta-soil==0.1.2
+RUN git clone -b v2.0 --depth 1 https://github.com/environmental-modeling-workflows/watershed-workflow /opt/watershed-workflow
+RUN git clone -b ats-input-spec-1.6 --depth 1 https://github.com/ecoon/ats_input_spec /opt/ats_input_spec
 
-#RUN cd /opt/ats_input_spec && python setup.py install
-#RUN cd /opt/watershed-workflow && python -m pip install -e .
+RUN cd /opt/ats_input_spec && python setup.py install
+RUN cd /opt/watershed-workflow && python -m pip install -e .
 
 # configure jupyter notebook ==========
 
