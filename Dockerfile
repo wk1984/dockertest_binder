@@ -16,12 +16,11 @@ RUN . /root/.bashrc \
     && /opt/miniforge/bin/conda init bash \
 	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
 	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
-    && conda info --envs \
-    && conda install mamba -c conda-forge -y
-
+    && conda info --envs
+	
 # configure Python packages ==========
     
-RUN mamba install -c conda-forge numpy jupyterlab ipykernel xarray matplotlib seaborn dask netcdf4 "h5py<3.15=mpi*" pandas openpyxl h5netcdf "hdf5<1.15" descartes \
+RUN conda install -c conda-forge numpy jupyterlab ipykernel xarray matplotlib seaborn dask netcdf4 "h5py<3.15=mpi*" pandas openpyxl h5netcdf "hdf5<1.15" descartes \
     geopandas rasterio sqlite rioxarray py3dep pygeohydro s3fs colorama libprotobuf pyogrio "shapely>2" zarr nc-time-axis -y \
     && conda clean --all
     
