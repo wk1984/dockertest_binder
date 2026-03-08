@@ -69,7 +69,7 @@ RUN python --version
 
 RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask  descartes geopandas rasterio sqlite==3.51 -y && conda clean --all
 
-RUN pip install netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 rioxarray py3dep pygeohydro s3fs colorama  \
+RUN pip install netcdf4 "h5py<3.15" pandas openpyxl h5netcdf "hdf5==1.12.1" rioxarray py3dep pygeohydro s3fs colorama  \
     
 	
 RUN cd ${AMANZI_SRC_DIR}/tools/amanzi_xml && python setup.py install
