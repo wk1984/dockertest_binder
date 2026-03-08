@@ -14,8 +14,8 @@ RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Minicon
 
 RUN . /root/.bashrc \
     && /opt/miniforge/bin/conda init bash \
-#	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-#	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
+	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
+	&& conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
     && conda info --envs \
     && conda install mamba -c conda-forge -y
 
