@@ -2,7 +2,7 @@ FROM wk1984/ats_dev:v1.6.0
 
 # install python pkgs ==========
 
-RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/4.14.0-2/Mambaforge-4.14.0-2-Linux-x86_64.sh -O ~/miniforge.sh \
+RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py311_23.10.0-1-Linux-x86_64.sh -O ~/miniforge.sh \
     && /bin/bash ~/miniforge.sh -b -p /opt/miniforge \
     && rm ~/miniforge.sh \
     && ln -s /opt/miniforge/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
@@ -16,7 +16,7 @@ RUN . /root/.bashrc \
 
 # configure Python packages ==========
     
-RUN mamba install -c conda-forge numpy jupyterlab ipykernel xarray matplotlib seaborn dask netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
+RUN conda install -c conda-forge numpy jupyterlab ipykernel xarray matplotlib seaborn dask netcdf4 "h5py<3.15" pandas openpyxl h5netcdf hdf5==1.12.1 descartes \
     geopandas rasterio sqlite rioxarray py3dep pygeohydro s3fs colorama libprotobuf pyogrio "shapely>2" -y \
     && conda clean --all
     
