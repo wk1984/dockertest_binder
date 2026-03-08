@@ -16,10 +16,10 @@ RUN . /root/.bashrc \
 
 # configure Python packages ==========
 
-RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask \
-                                 descartes geopandas rasterio sqlite \
-                                 netcdf4 h5py pandas openpyxl h5netcdf rioxarray hdf5==1.12.1 \
-                                 py3dep pygeohydro s3fs colorama -y \
+RUN mamba install -c conda-forge numpy jupyterlab notebook xarray matplotlib seaborn dask -y \
+#                                 descartes geopandas rasterio sqlite \
+#                                 netcdf4 h5py pandas openpyxl h5netcdf rioxarray hdf5==1.12.1 \
+#                                 py3dep pygeohydro s3fs colorama  \
     && conda clean --all
     
 RUN cd ${AMANZI_SRC_DIR}/tools/amanzi_xml && python setup.py install
