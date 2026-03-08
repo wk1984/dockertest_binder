@@ -1,11 +1,7 @@
 FROM wk1984/ats_dev:v1.6.0
 
-RUN apt-get update -y \
-    && apt-get install sqlite3 language-pack-en -y
-
 # install python pkgs ==========
 
-# RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py311_23.10.0-1-Linux-x86_64.sh -O ~/miniforge.sh \
 RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py312_26.1.1-1-Linux-x86_64.sh -O ~/miniforge.sh \
     && /bin/bash ~/miniforge.sh -b -p /opt/miniforge \
     && rm ~/miniforge.sh \
@@ -43,4 +39,4 @@ RUN cd /opt/watershed-workflow && python -m pip install -e .
 #RUN echo c.ServerApp.open_browser = False >> /root/.jupyter/jupyter_notebook_config.py
 #RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> /root/.jupyter/jupyter_notebook_config.py
 
-#CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser" ,  "--allow-root"]
+CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser" ,  "--allow-root"]
