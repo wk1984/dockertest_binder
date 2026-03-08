@@ -1,5 +1,8 @@
 FROM wk1984/ats_dev:v1.6.0
 
+RUN apt-get update \
+    && apt-get install sqlite3 language-pack-en
+
 # install python pkgs ==========
 
 RUN wget --quiet https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py311_23.10.0-1-Linux-x86_64.sh -O ~/miniforge.sh \
