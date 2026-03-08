@@ -2,7 +2,7 @@ FROM wk1984/ats_dev:v1.6.0
 
 # install python pkgs ==========
 
-RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/4.9.2-2/Mambaforge-4.9.2-2-Linux-x86_64.sh -O ~/miniforge.sh \
+RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/4.10.0-0/Mambaforge-4.10.0-0-Linux-x86_64.sh -O ~/miniforge.sh \
     && /bin/bash ~/miniforge.sh -b -p /opt/miniforge \
     && rm ~/miniforge.sh \
     && ln -s /opt/miniforge/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
