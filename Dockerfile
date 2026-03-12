@@ -1,4 +1,4 @@
-FROM centos:centos7.9.2009
+FROM richxsl/rhel7:min
 
 # RUN cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup 
 
