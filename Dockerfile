@@ -26,10 +26,10 @@ RUN yum update -y && \
     rm -rf /var/cache/yum
     
 #=============================================================================================
-#  Set up Python Jupyter Environment ...
+#  Set up Python Jupyter Environment ... https://gh-proxy.com/
 #=============================================================================================
 
-RUN wget --quiet https://gh-proxy.com/https://github.com/conda-forge/miniforge/releases/download/26.1.0-0/Miniforge3-26.1.0-0-Linux-x86_64.sh -O ~/miniconda.sh \
+RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/26.1.0-0/Miniforge3-26.1.0-0-Linux-x86_64.sh -O ~/miniconda.sh \
     && /bin/bash ~/miniconda.sh -b -p /opt/miniconda3 \
     && rm ~/miniconda.sh \
     && ln -s /opt/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
