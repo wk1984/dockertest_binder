@@ -1,250 +1,52 @@
-# WRF Build Environment
-# Ubuntu 24.04 with custom library builds
-FROM ubuntu:24.04 AS base
+# 使用 Ubuntu 22.04 作为基础镜像
+FROM ubuntu:22.04
 
-LABEL description="WRF atmospheric model build environment"
+# 避免安装过程中的交互式弹窗
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Build configuration
-ENV DEBIAN_FRONTEND=noninteractive \
-    WRF_VERSION=v4.7+ \
-    BASE_DIR=/home/wrfuser/wrf-build \
-    WRF_CONFIGURE_OPTION=35 \
-    WPS_CONFIGURE_OPTION=3
-
-# Library paths configuration
-ENV DIR=${BASE_DIR}/libs \
-    NETCDF=${BASE_DIR}/libs/netcdf \
-    JASPERLIB=${BASE_DIR}/libs/grib2/lib \
-    JASPERINC=${BASE_DIR}/libs/grib2/include \
-    LIB_DIR=${BASE_DIR}/libs/lib \
-    INCLUDE_DIR=${BASE_DIR}/libs/include \
-    BIN_DIR=${BASE_DIR}/libs/bin \
-    RUN_DIR=${BASE_DIR}/run \
-    LD_LIBRARY_PATH="${BASE_DIR}/libs/lib:${BASE_DIR}/libs/netcdf/lib:${BASE_DIR}/libs/grib2/lib" \
-    PATH=".:/home/wrfuser/.local/bin:${BASE_DIR}/libs/netcdf/bin:${BASE_DIR}/libs/bin:${PATH}"
-
-# Compiler environment
-ENV CC=gcc \
-    CXX=g++ \
-    F77=gfortran \
-    FC=gfortran \
-    CFLAGS='-O3 -fPIC' \
-    CXXFLAGS='-O3 -fPIC' \
-    FFLAGS='-O3 -fPIC -fallow-argument-mismatch -fallow-invalid-boz' \
-    FCFLAGS='-O3 -fPIC -fallow-argument-mismatch -fallow-invalid-boz' \
-    CPP='gcc -E' \
-    CXXCPP='g++ -E'
-
-# Install all WRF dependencies for Ubuntu 24.04
+# 1. 安装系统先决条件
 RUN apt-get update && apt-get install -y \
-    # Build essentials
-    build-essential \
-    gfortran \
-    gcc gdb nano \
-    g++ \
-    make \
     cmake \
-    m4 \
-    perl \
     csh \
-    tcsh \
-    pkg-config \
-    # Network tools
-    curl \
-    wget \
+    m4 \
+    gfortran \
     git \
-    python3 \
-    python3-pip \
-    # NetCDF, HDF5, and GRIB2 dependencies
-    libhdf5-dev \
-    libhdf5-serial-dev \
-    zlib1g-dev \
-    libjpeg-dev \
-    # Build tools for custom libraries
-    autoconf \
-    libtool \
-    bzip2 \
-    # Optional dependencies
-    libproj-dev \
-    libopenmpi-dev \
-    openmpi-bin \
-    # Utilities
-    vim \
-    time \
-    libtirpc-dev \
+    build-essential \
+    curl \
+    libxml2-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Create normal user and directories
-RUN useradd -m -s /bin/bash wrfuser && \
-    mkdir -p ${BASE_DIR} ${LIB_DIR} ${INCLUDE_DIR} ${BIN_DIR} ${RUN_DIR} && \
-    chown -R wrfuser:wrfuser /home/wrfuser
+# 设置工作目录
+WORKDIR /opt/cryowrf
 
-USER wrfuser
-WORKDIR ${BASE_DIR}
+# 2. 下载 CRYOWRF v1.0
+RUN git clone https://github.com/vsharma-next/CRYOWRF.git .
 
-# Stage 1: Build WRF libraries from source (heavily cached)
-# This stage builds static dependencies that rarely change:
-# - MPICH, zlib, HDF5, NetCDF-C, NetCDF-Fortran, libpng, jasper
-# These libraries will be cached and reused across builds
-FROM base AS libraries-build
-USER wrfuser
-WORKDIR ${BASE_DIR}
+# 3. 安装本地库 (NetCDF 4.1.3 和 MPICH 3.0.4)
+# 注意：脚本通常会修改环境变量，这里我们需要在后续手动设置 ENV
+RUN cd libraries && \
+    /bin/bash -c "source ./install_libs.sh"
 
-# Create libs directory
-RUN cd ${BASE_DIR} && \
-    mkdir -p libs
+# 4. 设置环境变量 (参考 install_libs.sh 可能设置的路径)
+# 根据 WRF 惯例，通常安装在同级目录的本地文件夹中
+ENV NETCDF=/opt/cryowrf/libraries/local
+ENV PATH=/opt/cryowrf/libraries/local/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/cryowrf/libraries/local/lib:$LD_LIBRARY_PATH
 
-# Build MPICH (cached downloads)
-RUN --mount=type=cache,target=/home/wrfuser/.cache \
-    cd ${BASE_DIR} && \
-    unset F90 && \
-    unset F90FLAGS && \
-    export CFLAGS="$CFLAGS -fcommon" && \
-    wget -O mpich-3.0.4.tar.gz https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/mpich-3.0.4.tar.gz && \
-    tar -xf mpich-3.0.4.tar.gz && \
-    cd mpich-3.0.4 && \
-    ./configure --prefix=$DIR --disable-wrapper-rpath && \
-    make -j 32 2>&1 && \
-    make install && \
-    cd .. && \
-    rm -rf mpich*
+# 5. 安装 meteoio, snowpack 和 coupler
+RUN /bin/bash -c "source ./compiler_snow_libs.sh"
 
-# Build zlib
-RUN cd ${BASE_DIR} && \
-    wget https://www2.mmm.ucar.edu/people/duda/files/mpas/sources/zlib-1.2.11.tar.gz && \
-    tar xzvf zlib-1.2.11.tar.gz && \
-    cd zlib-1.2.11 && \
-    ./configure --prefix=$DIR/grib2 && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf zlib*
+# 6. 编译 WRF
+# 选用选项 34 (GNU dmpar)，你可以根据需要修改 printf 中的数字
+RUN printf "34\n1\n" | ./configure && \
+    ./compile em_real -j 8
 
-# Build HDF5
-RUN cd ${BASE_DIR} && \
-    export LDFLAGS="-L$DIR/lib -L$DIR/grib2/lib" && \
-    export CPPFLAGS="-I$DIR/include -I$DIR/grib2/include" && \
-    wget https://www2.mmm.ucar.edu/people/duda/files/mpas/sources/hdf5-1.10.5.tar.bz2 && \
-    tar -xf hdf5-1.10.5.tar.bz2 && \
-    cd hdf5-1.10.5 && \
-    ./configure --prefix=$DIR --with-zlib=$DIR/grib2 --enable-fortran --enable-shared && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf hdf5*
+# 7. 编译 WPS
+# 选用选项 2
+ENV WRF_DIR=/opt/cryowrf
+RUN cd WPS && \
+    printf "2\n" | ./configure && \
+    ./compile
 
-# Build NetCDF-C
-RUN cd ${BASE_DIR} && \
-    export LDFLAGS="-L$DIR/lib -L$DIR/grib2/lib" && \
-    export CPPFLAGS="-I$DIR/include -I$DIR/grib2/include" && \
-    wget https://github.com/Unidata/netcdf-c/archive/v4.7.2.tar.gz && \
-    tar -xf v4.7.2.tar.gz && \
-    cd netcdf-c-4.7.2 && \
-    ./configure --enable-shared --enable-netcdf4 --disable-filter-testing --disable-dap --prefix=$DIR/netcdf && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf v4.7.2.tar.gz netcdf-c*
-
-# Build NetCDF-Fortran
-RUN cd ${BASE_DIR} && \
-    export LIBS="-lnetcdf -lhdf5_hl -lhdf5 -lz" && \
-    export LDFLAGS="-L$DIR/lib -L$DIR/netcdf/lib -L$DIR/grib2/lib" && \
-    export CPPFLAGS="-I$DIR/include -I$DIR/netcdf/include -I$DIR/grib2/include" && \
-    wget https://github.com/Unidata/netcdf-fortran/archive/v4.5.2.tar.gz && \
-    tar -xf v4.5.2.tar.gz && \
-    cd netcdf-fortran-4.5.2 && \
-    ./configure --enable-shared --prefix=$DIR/netcdf && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf netcdf-fortran* v4.5.2.tar.gz
-
-# Build libpng
-RUN cd ${BASE_DIR} && \
-    wget https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/libpng-1.2.50.tar.gz && \
-    tar xzvf libpng-1.2.50.tar.gz && \
-    cd libpng-1.2.50 && \
-    ./configure --prefix=$DIR/grib2 && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf libpng*
-
-# Build jasper
-RUN cd ${BASE_DIR} && \
-    wget https://www2.mmm.ucar.edu/wrf/OnLineTutorial/compile_tutorial/tar_files/jasper-1.900.1.tar.gz && \
-    tar xzvf jasper-1.900.1.tar.gz && \
-    cd jasper-1.900.1 && \
-    ./configure --prefix=$DIR/grib2 && \
-    make -j 32 && \
-    make install && \
-    cd .. && \
-    rm -rf jasper*
-
-# Stage 2: 获取 CRYOWRF-WRF 源代码 (从指定的 WSL Git 仓库)
-FROM libraries-build AS wrf-source
-
-# 定义版本变量，方便后续维护
-ENV CRYOWRF_TAG=release-v4.7.1+cryowrf-1.2.0
-
-RUN cd ${BASE_DIR} && \
-    # 下载指定的 Release 源码包 (tar.gz 格式)
-    wget https://git.wsl.ch/atmospheric-models/CRYOWRF-WRF/-/archive/${CRYOWRF_TAG}/CRYOWRF-WRF-${CRYOWRF_TAG}.tar.gz && \
-    # 解压并重命名文件夹为 WRF，以匹配后续构建路径
-    tar -xf CRYOWRF-WRF-${CRYOWRF_TAG}.tar.gz && \
-    mv CRYOWRF-WRF-${CRYOWRF_TAG} WRF && \
-    # 清理压缩包
-    rm CRYOWRF-WRF-${CRYOWRF_TAG}.tar.gz && \
-    # 确保权限正确
-    chown -R wrfuser:wrfuser ${BASE_DIR}/WRF
-
-# 验证源代码结构 (保留你原有的验证步骤)
-RUN cd ${BASE_DIR}/WRF && \
-    test -f configure && \
-    test -d Registry && \
-    test -d phys
-	
-# CRYOWRF libraries will be built as part of WRF build process
-
-# Stage 3: Configure and build WRF
-FROM wrf-source AS wrf-build-attempt
-RUN cd ${BASE_DIR}/WRF && \
-    export JASPER=$DIR/grib2 && \
-    export JASPER_ROOT=$DIR/grib2 && \
-    ./clean -a && \
-    printf "${WRF_CONFIGURE_OPTION}\n1\n" | ./configure && \
-    ./compile em_real -j 20
-
-# Stage 3.5: Analysis stage where we can examine the log even if build failed  
-FROM wrf-build-attempt AS wrf-build
-
-# Stage 4: Build WPS
-FROM wrf-build AS wps-build
-RUN cd ${BASE_DIR} && \
-    git clone https://github.com/wrf-model/WPS.git && \
-    cd WPS && \
-    export WRF_DIR=${BASE_DIR}/WRF && \
-    printf "${WPS_CONFIGURE_OPTION}\n" | ./configure && \
-    ./compile > log.compile 2>&1
-
-# Final stage: Runtime environment
-FROM wps-build AS final
-
-# Create convenient links in run directory
-RUN ln -sf ${BASE_DIR}/WRF/main/wrf.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WRF/main/real.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WRF/main/ndown.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WRF/main/tc.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WPS/geogrid/src/geogrid.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WPS/ungrib/src/ungrib.exe ${RUN_DIR}/ 2>/dev/null || true && \
-    ln -sf ${BASE_DIR}/WPS/metgrid/src/metgrid.exe ${RUN_DIR}/ 2>/dev/null || true
-
-# Set up working directory and entrypoint
-WORKDIR /home/wrfuser
-ENTRYPOINT ["/bin/bash"]
-
-# Container metadata
-LABEL description="WRF atmospheric model build environment" \
-      wrf_version="4.7.1" \
-      ubuntu_version="24.04"
+# 设置默认启动进入 bash
+CMD ["/bin/bash"]
