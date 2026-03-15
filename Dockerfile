@@ -37,6 +37,8 @@ ENV LD_LIBRARY_PATH=/opt/cryowrf/libraries/lib:$LD_LIBRARY_PATH
 # 5. 安装 meteoio, snowpack 和 coupler
 RUN /bin/bash -c "source ./compiler_snow_libs.sh"
 
+RUN nc-config --all
+
 # 6. 编译 WRF
 # 选用选项 34 (GNU dmpar)，你可以根据需要修改 printf 中的数字
 RUN cd WRF && \
