@@ -46,7 +46,7 @@ RUN cd WRF && \
 # 7. 编译 WPS
 # 选用选项 2
 ENV WRF_DIR=/opt/cryowrf
-RUN cd WPS && \
+RUN cd ../WPS && \
     printf "2\n" | ./configure && \
     ./compile
 
