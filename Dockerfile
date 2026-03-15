@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /opt/cryowrf
 
 # 2. 下载 CRYOWRF v1.0
-RUN git clone https://github.com/vsharma-next/CRYOWRF.git .
+RUN git clone https://github.com/wk1984/CRYOWRF.git .
 
 # 3. 安装本地库 (NetCDF 4.1.3 和 MPICH 3.0.4)
 # 注意：脚本通常会修改环境变量，这里我们需要在后续手动设置 ENV
