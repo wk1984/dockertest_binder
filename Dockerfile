@@ -1,5 +1,5 @@
 # 使用 Ubuntu 22.04 作为基础镜像
-FROM ubuntu:22.04
+FROM ubuntu:18.04
 
 # 避免安装过程中的交互式弹窗
 ENV DEBIAN_FRONTEND=noninteractive
