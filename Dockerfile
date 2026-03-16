@@ -5,5 +5,4 @@ RUN pip3 install zenodo_get
 
 # download data from zenodo. This will download a zip file (e.g., data.zip)
 RUN cd /home/jovyan && \
-    zenodo_get 10.5281/zenodo.10982774 && \
-    tar -xf data.zip -C ./data
+    zenodo_get 10.5281/zenodo.10982774
