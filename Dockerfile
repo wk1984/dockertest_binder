@@ -1,8 +1,9 @@
-FROM wk1984/cryowrf:v1.0
+FROM pshuai/ats_workflow:v1.0
 
-RUN apt-get update && \
-    apt-get install python3 python3-pip python3-venv apt-utils libffi-dev=3.4 -y
+# install zenodo_get
+RUN pip3 install zenodo_get
 
-RUN pip3 install jupyterlab
-    
-RUN which jupyter-lab
+# download data from zenodo. This will download a zip file (e.g., data.zip)
+RUN cd /home/jovyan && \
+    zenodo_get 10.5281/zenodo.10982774 && \
+    tar -xf data.zip -C ./data
