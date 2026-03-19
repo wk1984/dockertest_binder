@@ -1,7 +1,7 @@
 # ==========================================
 # 第一阶段：编译 (Builder Stage)
 # ==========================================
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 ENV TZ=Etc/UTC \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
@@ -46,7 +46,7 @@ RUN pyenv global 3.10.20
 RUN pyenv rehash
 # RUN python --version
 RUN pip install -U pip pipenv
-RUN pip install numpy==1.22.3 pandas matplotlib xarray netcdf4 commentjson pyyaml scipy lhsmdu scikit-learn bokeh jupyterlab
+RUN pip install matplotlib==3.8.4 numpy==1.22.3 pandas==1.5.1 bokeh==3.9.0 netCDF4==1.7.4 commentjson==0.9.0 ipython jupyter==1.1.1 lhsmdu==1.1 xarray==2023.12.0 scikit-learn==1.7.2 pyyaml scipy==1.11.4
 
 RUN git clone -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
     && cd dvm-dos-tem \
