@@ -73,9 +73,13 @@ RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
 
 RUN echo 'using Pkg; Pkg.gc()' | julia
 
+RUN adduser ddt_user
+
 # configure jupyter notebook ==========
 
-ARG dump_file=/root/.jupyter/jupyter_lab_config.py
+USER ddt_user
+
+ARG dump_file=/home/ddt_user/.jupyter/jupyter_lab_config.py
 
 RUN jupyter-lab --generate-config
 RUN python -c "from jupyter_server.auth import passwd; print(\"c.ServerApp.password = u'\" +  passwd('123456') + \"'\")" >> $dump_file
@@ -86,4 +90,4 @@ RUN echo c.ServerApp.ip = \'*\' >> $dump_file
 RUN echo c.ServerApp.open_browser = False >> $dump_file
 RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
 
-CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser", "--allow-root"]
+CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
