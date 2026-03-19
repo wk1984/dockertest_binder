@@ -62,10 +62,10 @@ RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.
     && rm julia-1.7.3-linux-x86_64.tar.gz
     
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-#RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
-#RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-#RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-#RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
+RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+RUN echo 'using Pkg; Pkg.add("CSV")' | julia
 RUN echo 'using Pkg; Pkg.add("YAML")' | julia
 RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
 
