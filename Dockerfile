@@ -50,15 +50,18 @@ RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # install python pkgs ==========
 
-USER ddt_user
+ARG UNAME=ddt_user
 
-RUN mkdir -p /home/ddt_user/.jupyter
-RUN git clone https://github.com/pyenv/pyenv.git /home/ddt_user/.pyenv
+USER $UNAME
+ENV HOME=/home/$UNAME
+RUN git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+ENV PYENV_ROOT=$HOME/.pyenv
+ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 RUN pyenv install 3.8.6
 RUN pyenv global 3.8.6
 RUN pyenv rehash
-# RUN python --version
+RUN python --version
 RUN pip install -U pip pipenv
 RUN pip install matplotlib numpy==1.22.3 pandas bokeh netCDF4 commentjson ipython jupyter lhsmdu xarray scikit-learn pyyaml scipy
 
@@ -67,7 +70,7 @@ RUN dvmdostem --sha \
 
 # install julia pkgs ===========
 
-ENV PYTHON="/home/ddt_user/.pyenv/bin/python"
+ENV PYTHON=$HOME/.pyenv/bin/python
 
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
