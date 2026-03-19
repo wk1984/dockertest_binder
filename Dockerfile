@@ -13,7 +13,7 @@ ENV TZ=Etc/UTC \
 	SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp" \
 	SITE_SPECIFIC_LIBS="-I/usr/lib" \
 	PYENV_ROOT=/home/$UNAME/.pyenv \
-    PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/scripts/viewers:/opt/julia-1.7.3/bin:/home/$UNAME/.pyenv/shims:/home/$UNAME/.pyenv/bin::$PATH \
+    PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/scripts/viewers:/opt/julia-1.7.3/bin:/home/$UNAME/.pyenv/shims:/home/$UNAME/.pyenv/versions/3.8.6/bin::$PATH \
 #     JULIA_PKG_SERVER="https://mirrors.ustc.edu.cn/julia" \
 	PYTHONPATH="/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/viewers:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/mads_calibration"
 		
@@ -70,7 +70,7 @@ RUN dvmdostem --sha \
 
 # install julia pkgs ===========
 
-ENV PYTHON=$HOME/.pyenv/bin/python
+ENV PYTHON=/home/$UNAME/.pyenv/versions/3.8.6/bin/python
 
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
