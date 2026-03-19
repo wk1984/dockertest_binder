@@ -41,8 +41,8 @@ WORKDIR /opt
 RUN mkdir -p /root/.jupyter
 RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-RUN pyenv install 3.10.20
-RUN pyenv global 3.10.20
+RUN pyenv install 3.11.15
+RUN pyenv global 3.11.15
 RUN pyenv rehash
 # RUN python --version
 RUN pip install -U pip pipenv
@@ -73,15 +73,15 @@ RUN echo 'using Pkg; Pkg.gc()' | julia
 
 # configure jupyter notebook ==========
 
-#ARG dump_file=/root/.jupyter/jupyter_lab_config.py
+ARG dump_file=/root/.jupyter/jupyter_lab_config.py
 
-#RUN jupyter-lab --generate-config
-#RUN python -c "from jupyter_server.auth import passwd; print(\"c.ServerApp.password = u'\" +  passwd('123456') + \"'\")" >> $dump_file
+RUN jupyter-lab --generate-config
+RUN python -c "from jupyter_server.auth import passwd; print(\"c.ServerApp.password = u'\" +  passwd('123456') + \"'\")" >> $dump_file
 
-#RUN echo c.ServerApp.allow_origin = \'*\'  >> $dump_file
-#RUN echo c.ServerApp.allow_remote_access = True >> $dump_file
-#RUN echo c.ServerApp.ip = \'*\' >> $dump_file
-#RUN echo c.ServerApp.open_browser = False >> $dump_file
-#RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
+RUN echo c.ServerApp.allow_origin = \'*\'  >> $dump_file
+RUN echo c.ServerApp.allow_remote_access = True >> $dump_file
+RUN echo c.ServerApp.ip = \'*\' >> $dump_file
+RUN echo c.ServerApp.open_browser = False >> $dump_file
+RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser", "--allow-root"]
