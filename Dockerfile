@@ -28,7 +28,7 @@ RUN apt-get update -y --fix-missing \
 	   libhdf5-dev libnetcdf-dev libjsoncpp-dev \
        libffi-dev libssl-dev libbz2-dev liblzma-dev libncurses5-dev \
        libncursesw5-dev libsqlite3-dev \
-       g++ make \
+       g++ make patch \
        ca-certificates \
 	   git wget curl nano \
     && rm -rf /var/lib/apt/lists/*
@@ -41,12 +41,12 @@ WORKDIR /opt
 RUN mkdir -p /root/.jupyter
 RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-RUN pyenv install 3.11.15
-RUN pyenv global 3.11.15
+RUN pyenv install 3.8.6
+RUN pyenv global 3.8.6
 RUN pyenv rehash
 # RUN python --version
 RUN pip install -U pip pipenv
-RUN pip install matplotlib==3.8.4 numpy==1.22.3 pandas==1.5.1 bokeh==3.9.0 netCDF4==1.7.4 commentjson==0.9.0 ipython jupyter==1.1.1 lhsmdu==1.1 xarray==2023.12.0 scikit-learn==1.7.2 pyyaml scipy==1.11.4
+RUN pip install matplotlib numpy==1.22.3 pandas bokeh netCDF4 commentjson ipython jupyter lhsmdu xarray scikit-learn pyyaml scipy
 
 RUN git clone -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
     && cd dvm-dos-tem \
@@ -56,6 +56,8 @@ RUN dvmdostem --sha \
     && jupyter-lab --version
 
 # install julia pkgs ===========
+
+ENV PYTHON="/root/.pyenv/bin/python"
 
 RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
     && tar -xzf julia-1.7.3-linux-x86_64.tar.gz \
