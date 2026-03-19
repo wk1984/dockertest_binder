@@ -42,9 +42,9 @@ RUN pip install matplotlib==3.8.4 numpy==1.22.3 pandas==1.5.1 bokeh==3.9.0 netCD
 
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
-RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+# RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+# RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+# RUN echo 'using Pkg; Pkg.add("CSV")' | julia
 RUN echo 'using Pkg; Pkg.add("YAML")' | julia
 
 RUN dvmdostem --sha
