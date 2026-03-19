@@ -3,6 +3,8 @@
 # ==========================================
 FROM ubuntu:22.04
 
+ARG UNAME=ddt_user
+
 ENV TZ=Etc/UTC \
     OMPI_ALLOW_RUN_AS_ROOT=1 \
     OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 \
@@ -10,8 +12,8 @@ ENV TZ=Etc/UTC \
 	DEBCONF_NONINTERACTIVE_SEEN=true \
 	SITE_SPECIFIC_INCLUDES="-I/usr/include/jsoncpp" \
 	SITE_SPECIFIC_LIBS="-I/usr/lib" \
-	PYENV_ROOT=/root/.pyenv \
-    PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/scripts/viewers:/opt/julia-1.7.3/bin:/root/.pyenv/shims:/root/.pyenv/bin::$PATH \
+	PYENV_ROOT=/home/$UNAME/.pyenv \
+    PATH=/opt/dvm-dos-tem:/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/scripts/viewers:/opt/julia-1.7.3/bin:/home/$UNAME/.pyenv/shims:/home/$UNAME/.pyenv/bin::$PATH \
 #     JULIA_PKG_SERVER="https://mirrors.ustc.edu.cn/julia" \
 	PYTHONPATH="/opt/dvm-dos-tem/scripts:/opt/dvm-dos-tem/scripts/viewers:/opt/dvm-dos-tem/scripts/util:/opt/dvm-dos-tem/mads_calibration"
 		
@@ -50,8 +52,6 @@ RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # install python pkgs ==========
 
-ARG UNAME=ddt_user
-
 USER $UNAME
 ENV HOME=/home/$UNAME
 RUN git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
@@ -84,7 +84,7 @@ RUN echo 'using Pkg; Pkg.gc()' | julia
 
 # configure jupyter notebook ==========
 
-ARG dump_file=/home/ddt_user/.jupyter/jupyter_lab_config.py
+ARG dump_file=$HOME/.jupyter/jupyter_lab_config.py
 
 RUN jupyter-lab --generate-config
 RUN python -c "from jupyter_server.auth import passwd; print(\"c.ServerApp.password = u'\" +  passwd('123456') + \"'\")" >> $dump_file
@@ -94,5 +94,7 @@ RUN echo c.ServerApp.allow_remote_access = True >> $dump_file
 RUN echo c.ServerApp.ip = \'*\' >> $dump_file
 RUN echo c.ServerApp.open_browser = False >> $dump_file
 RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
+
+WORKDIR $HOME
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
