@@ -30,15 +30,13 @@ RUN apt-get update -y --fix-missing \
 
 # numpy==1.22.3 pandas matplotlib xarray netcdf4 commentjson pyyaml scipy lhsmdu scikit-learn bokeh jupyterlab
     
-RUN git clone https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem \
+RUN git clone -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git /opt/dvm-dos-tem \
     && cd /opt/dvm-dos-tem \
     && make
 
 USER jovyan
 
-RUN pip install matplotlib==3.8.4 numpy==1.22.3 pandas==1.5.1 bokeh==3.9.0 netCDF4==1.7.4 commentjson==0.9.0 ipython jupyter==1.1.1 lhsmdu==1.1 xarray==2023.12.0 scikit-learn==1.7.2 pyyaml scipy==1.11.4 \
-    &&  cd /opt/dvm-dos-tem \
-    && pip install -e /opt/dvm-dos-tem/pyddt/
+RUN pip install matplotlib==3.8.4 numpy==1.22.3 pandas==1.5.1 bokeh==3.9.0 netCDF4==1.7.4 commentjson==0.9.0 ipython jupyter==1.1.1 lhsmdu==1.1 xarray==2023.12.0 scikit-learn==1.7.2 pyyaml scipy==1.11.4
 
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
