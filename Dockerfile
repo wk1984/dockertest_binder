@@ -73,7 +73,17 @@ RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
 
 RUN echo 'using Pkg; Pkg.gc()' | julia
 
-RUN adduser ddt_user
+# 1. 定义变量（方便后续维护）
+ARG USERNAME=ddt_user
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# 2. 创建用户组和用户
+# --no-log-init 解决一些系统中由于大 UID 导致的构建缓慢问题
+# --create-home 自动创建 /home/ddt_user 目录
+
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID --m --shell /bin/bash $USERNAME
 
 # configure jupyter notebook ==========
 
