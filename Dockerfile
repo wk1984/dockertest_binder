@@ -75,7 +75,7 @@ RUN echo 'using Pkg; Pkg.gc()' | julia
 
 # 1. 定义变量（方便后续维护）
 ARG USERNAME=ddt_user
-ARG USER_UID=1000
+ARG USER_UID=10020
 ARG USER_GID=$USER_UID
 
 # 2. 创建用户组和用户
