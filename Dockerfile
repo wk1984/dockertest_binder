@@ -53,7 +53,7 @@ RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER ddt_user
 
 RUN mkdir -p /home/ddt_user/.jupyter
-RUN git clone https://github.com/pyenv/pyenv.git /ddt_user/.pyenv
+RUN git clone https://github.com/pyenv/pyenv.git /home/ddt_user/.pyenv
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 RUN pyenv install 3.8.6
 RUN pyenv global 3.8.6
