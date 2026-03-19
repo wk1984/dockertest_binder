@@ -36,10 +36,24 @@ RUN apt-get update -y --fix-missing \
 # 克隆源码并编译
 WORKDIR /opt
 
+RUN git clone -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
+    && cd dvm-dos-tem \
+    && make
+	
+RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
+    && tar -xzf julia-1.7.3-linux-x86_64.tar.gz \
+    && rm julia-1.7.3-linux-x86_64.tar.gz
+	
+# 2. 创建用户组和用户
+RUN useradd -m -s /bin/bash ddt_user
+RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 # install python pkgs ==========
 
-RUN mkdir -p /root/.jupyter
-RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
+USER ddt_user
+
+RUN mkdir -p /home/ddt_user/.jupyter
+RUN git clone https://github.com/pyenv/pyenv.git /ddt_user/.pyenv
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 RUN pyenv install 3.8.6
 RUN pyenv global 3.8.6
@@ -48,21 +62,13 @@ RUN pyenv rehash
 RUN pip install -U pip pipenv
 RUN pip install matplotlib numpy==1.22.3 pandas bokeh netCDF4 commentjson ipython jupyter lhsmdu xarray scikit-learn pyyaml scipy
 
-RUN git clone -b v0.8.3 https://github.com/uaf-arctic-eco-modeling/dvm-dos-tem.git \
-    && cd dvm-dos-tem \
-    && make
-	
 RUN dvmdostem --sha \
     && jupyter-lab --version
 
 # install julia pkgs ===========
 
-ENV PYTHON="/root/.pyenv/bin/python"
+ENV PYTHON="/home/ddt_user/.pyenv/bin/python"
 
-RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.3-linux-x86_64.tar.gz \
-    && tar -xzf julia-1.7.3-linux-x86_64.tar.gz \
-    && rm julia-1.7.3-linux-x86_64.tar.gz
-    
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
 RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
@@ -73,13 +79,7 @@ RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
 
 RUN echo 'using Pkg; Pkg.gc()' | julia
 
-# 2. 创建用户组和用户
-RUN useradd -m -s /bin/bash ddt_user
-RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
 # configure jupyter notebook ==========
-
-USER ddt_user
 
 ARG dump_file=/home/ddt_user/.jupyter/jupyter_lab_config.py
 
