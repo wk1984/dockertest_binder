@@ -106,6 +106,6 @@ WORKDIR $HOME
 RUN setup_working_directory.py --input-data-path=/opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 work
 RUN cp -r /opt/dvm-dos-tem/calibration/ $HOME
 
-COPY mads_calibration ${HOME}
+COPY mads_calibration ${HOME}/mads_calibration
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
