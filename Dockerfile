@@ -98,5 +98,6 @@ RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash
 WORKDIR $HOME
 
 RUN cp -r /opt/dvm-dos-tem/mads_calibration $HOME
+RUN setup_working_directory.py --input-data-path=/opt/dvm-dos-tem/demo-data/cru-ts40_ar5_rcp85_ncar-ccsm4_toolik_field_station_10x10 work
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
