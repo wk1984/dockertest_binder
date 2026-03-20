@@ -49,6 +49,7 @@ RUN wget --quiet https://julialang-s3.julialang.org/bin/linux/x64/1.7/julia-1.7.
 # 2. 创建用户组和用户
 RUN useradd -m -s /bin/bash ddt_user
 RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN mkdir /work
 
 # install python pkgs ==========
 
