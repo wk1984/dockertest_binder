@@ -32,7 +32,7 @@ RUN apt-get update -y --fix-missing \
        libncursesw5-dev libsqlite3-dev \
        g++ make patch \
        ca-certificates \
-	   git wget curl nano \
+	   git wget curl nano sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # 克隆源码并编译
