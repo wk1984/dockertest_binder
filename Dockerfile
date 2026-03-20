@@ -102,6 +102,7 @@ RUN ln -s /opt/dvm-dos-tem/dvmdostem /work/dvmdostem
 COPY mads_calibration ${HOME}/mads_calibration
 RUN cp -r /opt/dvm-dos-tem/calibration/ $HOME
 
+# HAVE to CHANGE permission of the home path, otherwise, You can not save any files.
 RUN chown -R ${UNAME} ${HOME}
 
 USER $UNAME
