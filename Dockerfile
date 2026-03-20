@@ -97,6 +97,6 @@ RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash
 
 WORKDIR $HOME
 
-CP /opt/dvm-dos-tem/mads_calibration $HOME
+RUN cp -r /opt/dvm-dos-tem/mads_calibration $HOME
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
