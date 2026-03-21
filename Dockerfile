@@ -44,6 +44,8 @@ RUN cd /opt \
 RUN useradd -m -s /bin/bash ddt_user
 RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN ln -s /opt/dvm-dos-tem/dvmdostem /work/dvmdostem
+
 # install python pkgs ==========
 
 USER ddt_user
