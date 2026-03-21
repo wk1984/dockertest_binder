@@ -90,4 +90,8 @@ RUN echo c.ServerApp.ip = \'*\' >> $dump_file
 RUN echo c.ServerApp.open_browser = False >> $dump_file
 RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
 
+WORKDIR $HOME
+
+COPY /mads_calibration $HOME/mads_calibration
+
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
