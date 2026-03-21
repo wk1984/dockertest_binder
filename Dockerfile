@@ -50,7 +50,7 @@ USER ddt_user
 ENV HOME=/home/ddt_user
 RUN git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 ENV PYENV_ROOT=$HOME/.pyenv
-ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/shims/bin:$PYENV_ROOT/bin:$PATH
+ENV PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 RUN pyenv install 3.8.6
 RUN pyenv global 3.8.6
@@ -65,7 +65,7 @@ RUN dvmdostem --sha \
 
 # install julia pkgs ===========
 
-ENV PYTHON=$HOME/.pyenv/shims/bin/python
+ENV PYTHON=$HOME/.pyenv/shims/python
 
 RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
 RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
