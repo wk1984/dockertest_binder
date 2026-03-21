@@ -82,7 +82,6 @@ RUN julia -e 'using Pkg; \
         "IJulia" \
     ]; \
     Pkg.add(pkgs); \
-    ENV["PYTHON"] = "/usr/bin/python3"; \
     Pkg.build("PyCall"); \
     Pkg.precompile(); \
     Pkg.gc()'
