@@ -46,6 +46,8 @@ RUN echo "ddt_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN mkdir /work && ln -s /opt/dvm-dos-tem/dvmdostem /work/dvmdostem
 
+COPY --chown=ddt_user:ddt_user ./mads_calibration /home/ddt_user/mads_calibration
+
 # install python pkgs ==========
 
 USER ddt_user
@@ -69,15 +71,21 @@ RUN dvmdostem --sha \
 
 ENV PYTHON=$HOME/.pyenv/shims/python
 
-RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
-RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
-RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
-RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
-RUN echo 'using Pkg; Pkg.add("CSV")' | julia
-RUN echo 'using Pkg; Pkg.add("YAML")' | julia
-RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
-RUN echo 'using Pkg; Pkg.precompile()' | julia
-RUN echo 'using Pkg; Pkg.gc()' | julia
+RUN julia -e 'using Pkg; \
+    pkgs = [ \
+        PackageSpec(name="Mads", version="1.3.10"), \
+        "PyCall", \
+        "DataFrames", \
+        "DataStructures", \
+        "CSV", \
+        "YAML", \
+        "IJulia" \
+    ]; \
+    Pkg.add(pkgs); \
+    ENV["PYTHON"] = "/usr/bin/python3"; \
+    Pkg.build("PyCall"); \
+    Pkg.precompile(); \
+    Pkg.gc()'
 
 # configure jupyter notebook ==========
 
@@ -93,7 +101,5 @@ RUN echo c.ServerApp.open_browser = False >> $dump_file
 RUN echo "c.ServerApp.terminado_settings = { \"shell_command\": [\"/usr/bin/bash\"] }" >> $dump_file
 
 WORKDIR $HOME
-
-COPY /mads_calibration $HOME/mads_calibration
 
 CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser"]
