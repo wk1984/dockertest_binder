@@ -71,20 +71,16 @@ RUN dvmdostem --sha \
 
 ENV PYTHON=$HOME/.pyenv/shims/python
 
-RUN julia -e 'using Pkg; \
-    pkgs = [ \
-        PackageSpec(name="Mads", version="1.3.10"), \
-        "PyCall", \
-        "DataFrames", \
-        "DataStructures", \
-        "CSV", \
-        "YAML", \
-        "IJulia" \
-    ]; \
-    Pkg.add(pkgs); \
-    Pkg.build("PyCall"); \
-    Pkg.precompile(); \
-    Pkg.gc()'
+RUN echo 'using Pkg; Pkg.add(name="Mads", version="1.3.10")' | julia
+RUN echo 'using Pkg; Pkg.add("PyCall")' | julia
+RUN echo 'using Pkg; Pkg.add("DataFrames")' | julia
+RUN echo 'using Pkg; Pkg.add("DataStructures")' | julia
+RUN echo 'using Pkg; Pkg.add("CSV")' | julia
+RUN echo 'using Pkg; Pkg.add("YAML")' | julia
+RUN echo 'using Pkg; Pkg.add("IJulia")' | julia
+RUN echo 'using Pkg; Pkg.precompile()' | julia
+RUN echo 'using Pkg; Pkg.build("PyCall")' | julia
+RUN echo 'using Pkg; Pkg.gc()' | julia
 
 # configure jupyter notebook ==========
 
