@@ -22,4 +22,12 @@ RUN cd /root \
     && make install 
     
 RUN which meteoio_timeseries
-    
+
+RUN cd /root \
+    && wget --quiet https://git.wsl.ch/snow-models/snowpack/-/archive/Snowpack-3.7.0/snowpack-Snowpack-3.7.0.tar.gz -O snowpack.tar.gz \
+    && tar -zxvf snowpack.tar.gz \
+    && cd snowpack-Snowpack-3.7.0 \
+    && mkdir build && cd build \
+    && cmake .. \
+    && make \
+    && make install
