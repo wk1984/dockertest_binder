@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     
 # 重新声明必要的运行时环境变量
 # 路径合并配置
-ENV PATH=/root/meteoio-MeteoIO-2.11.0/bin:${AMANZI_TPLS_DIR}/bin:/opt/miniforge/bin:${PATH} \
-    LD_LIBRARY_PATH=/root/meteoio-MeteoIO-2.11.0/lib:${AMANZI_TPLS_DIR}/SEACAS/lib:${AMANZI_TPLS_DIR}/lib:${LD_LIBRARY_PATH}
+#ENV PATH=/root/meteoio-MeteoIO-2.11.0/bin:${AMANZI_TPLS_DIR}/bin:/opt/miniforge/bin:${PATH} \
+#    LD_LIBRARY_PATH=/root/meteoio-MeteoIO-2.11.0/lib:${AMANZI_TPLS_DIR}/SEACAS/lib:${AMANZI_TPLS_DIR}/lib:${LD_LIBRARY_PATH}
 
 
 RUN cd /root \
@@ -17,5 +17,9 @@ RUN cd /root \
     && tar -zxvf meteoio.tar.gz \
     && cd meteoio-MeteoIO-2.11.0 \
     && mkdir build && cd build \
-    && cmake .. 
+    && cmake .. \
+    && make \
+    && make install 
+    
+RUN which meteoio_timeseries
     
