@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 RUN cd /root \
-    && wget --quiet https://git.wsl.ch/snow-models/meteoio/-/archive/MeteoIO-2.11.0/meteoio-MeteoIO-2.10.0.tar.gz -O meteoio.tar.gz \
+    && wget --quiet https://git.wsl.ch/snow-models/meteoio/-/archive/MeteoIO-2.10.0/meteoio-MeteoIO-2.10.0.tar.gz -O meteoio.tar.gz \
     && tar -zxvf meteoio.tar.gz \
     && cd meteoio-MeteoIO-2.10.0 \
     && mkdir build && cd build \
@@ -24,7 +24,7 @@ RUN cd /root \
 RUN which meteoio_timeseries
 
 RUN cd /root \
-    && wget --quiet https://git.wsl.ch/snow-models/snowpack/-/archive/Snowpack-3.7.0/snowpack-Snowpack-3.6.0.tar.gz -O snowpack.tar.gz \
+    && wget --quiet https://git.wsl.ch/snow-models/snowpack/-/archive/Snowpack-3.6.0/snowpack-Snowpack-3.6.0.tar.gz -O snowpack.tar.gz \
     && tar -zxvf snowpack.tar.gz \
     && cd snowpack-Snowpack-3.6.0 \
     && mkdir build && cd build \
