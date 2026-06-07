@@ -13,7 +13,7 @@ ENV PATH=${ATS_DIR}/bin:${AMANZI_TPLS_DIR}/bin:/opt/miniforge/bin:${PATH} \
 
 RUN cd /root \
     && wget --quiet https://git.wsl.ch/snow-models/meteoio/-/archive/MeteoIO-2.11.0/meteoio-MeteoIO-2.11.0.tar.gz -O meteoio.tar.gz \
-    && tar -zxvf meteoio.gz \
+    && tar -zxvf meteoio.tar.gz \
     && cd meteoio \
     && ls 
     
