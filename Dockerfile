@@ -31,3 +31,14 @@ RUN cd /root \
     && cmake .. \
     && make \
     && make install
+    
+RUN which snowpack
+
+RUN cd /root \
+    && wget --quiet https://git.wsl.ch/snow-models/alpine3d/-/archive/alpine3d-3.2.0/alpine3d-alpine3d-3.2.0.tar.gz -O alpine3d.tar.gz \
+    && tar -zxvf alpine3d.tar.gz \
+    && cd alpine3d-alpine3d-3.2.0 \
+    && mkdir build && cd build \
+    && cmake .. -DOPENMP=ON \
+    && make \
+    && make install
