@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openmpi-bin libopenmpi-dev liblapack3 libblas3 wget curl ca-certificates git sqlite3 language-pack-en nano sudo cmake g++ \
+    wget make m4 patch build-essential ca-certificates cmake curl nano sqlite3 language-pack-en sudo \
+    openmpi-bin libopenmpi-dev liblapack-dev libblas-dev liblapack3 libblas3 \
+    git g++ gcc gfortran \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
     
 # 重新声明必要的运行时环境变量
