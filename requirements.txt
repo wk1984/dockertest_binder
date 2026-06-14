@@ -10,4 +10,3 @@ zarr
 pygeohydro
 earthaccess
 spicy-snow
-python==3.11
