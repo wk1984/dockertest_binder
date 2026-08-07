@@ -1,34 +1,17 @@
-FROM condaforge/miniforge3:26.1.0-0 As Builder
+FROM intel/oneapi:2026.0.0-devel-ubuntu24.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true \
     LPJROOT=/root/LPJmL \
-	PATH=/root/LPJmL/bin:$PATH
-	
-# RUN sed -i "s@http://.*.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
-	
-RUN apt-get update && apt-get -y install pkg-config build-essential
+	PATH=$LPJROOT/bin:$PATH 
 
-RUN conda install -y dpcpp_linux-64 udunits json-c libnetcdf make -c https://software.repos.intel.com/python/conda/ -c conda-forge
+# 安装编译所需的依赖（包含各种 -dev 包和构建工具）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git netcdf-bin libnetcdf-dev libnetcdff-dev cmake libudunits2-dev libjson-c-dev wget
 
-# compile LPJmL >>>
-
+# 下载并编译 LPJmL
 RUN cd /root \
-    && /bin/bash \
-    && git clone https://github.com/PIK-LPJmL/LPJmL.git \ 
+    && git clone https://github.com/PIK-LPJmL/LPJmL.git \
     && cd LPJmL \
-	&& ./configure.sh -nompi \
-	&& make all \
-	&& ldd lpjml | grep -i '/' | awk '{print $3}' | xargs -I '{}' cp '{}' .
-
-# <<<
-
-FROM condaforge/miniforge3:26.1.0-0
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    DEBCONF_NONINTERACTIVE_SEEN=true \
-    LPJROOT=/root/LPJmL \
-	PATH=/root/LPJmL/bin:$PATH
-	
-COPY --from=Builder /root/LPJmL /root/LPJmL
-	
+    && ./configure.sh \
+    && make all
