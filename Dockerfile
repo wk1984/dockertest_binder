@@ -16,7 +16,8 @@ RUN cd /root \
     && ./configure.sh \
     && make all \
 	&& cd bin \
-	&& ldd lpjml | grep -i '/' | awk '{print $3}' | xargs -I '{}' cp '{}' .
+	&& ldd lpjml | grep -i '/' | awk '{print $3}' | xargs -I '{}' cp '{}' . \
+	&& ldd mpicc | grep -i '/' | awk '{print $3}' | xargs -I '{}' cp '{}' .
 	
 # ==========================================
 # 阶段 2: 运行阶段 (最终生成的镜像)
