@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 	
 # RUN sed -i "s@http://.*.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc/apt/sources.list
 	
-RUN apt-get update && apt-get -y install cmake pkg-config build-essential libopenmpi-dev
+RUN apt-get update && apt-get -y install cmake pkg-config build-essential mpich
 
 RUN conda install -y dpcpp_linux-64 impi-devel udunits json-c libnetcdf make  -c https://software.repos.intel.com/python/conda/ -c conda-forge
 
