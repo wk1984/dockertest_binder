@@ -9,7 +9,7 @@ USER root
 
 # 安装编译所需的依赖（包含各种 -dev 包和构建工具）
 RUN sudo apt-get update && apt-get install -y --no-install-recommends \
-    git wget nano gmt ca-certificates
+    git wget nano gmt ca-certificates libgdal-dev gdal-bin
 
 USER jovyan
 
