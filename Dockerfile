@@ -1,4 +1,4 @@
-FROM rstudio/r-base:devel-jammy
+FROM quay.io/jupyter/r-notebook
 
 ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 
@@ -9,5 +9,5 @@ RUN sed -i "s@http://.*archive.ubuntu.com@http://mirrors.huaweicloud.com@g" /etc
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git wget nano gmt ca-certificates
 
-RUN cd /root \
+RUN cd \
    && git clone https://github.com/PIK-LPJmL/LandInG.git
