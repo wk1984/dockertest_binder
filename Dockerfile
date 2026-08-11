@@ -1,4 +1,4 @@
-FROM quay.io/jupyter/r-notebook
+FROM jupyter/r-notebook:lab-3.6.2
 
 ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 
