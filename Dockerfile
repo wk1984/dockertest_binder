@@ -25,4 +25,4 @@ RUN cd Parallel-SnowModel-1.0/env \
     
 RUN cd Parallel-SnowModel-1.0/code \
      && /bin/bash ./compile_snowmodel.script \
-     && ls
+     && ls ../
