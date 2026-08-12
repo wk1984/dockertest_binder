@@ -1,13 +1,13 @@
 FROM ubuntu:18.04
 
-ENV FORCE_UNSAFE_CONFIGURE 1
-ENV OMPI_ALLOW_RUN_AS_ROOT 1
-ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM 1
+ENV FORCE_UNSAFE_CONFIGURE=1
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-ENV nc_inc /usr/include
-ENV nc_lib /usr/lib/x86_64-linux-gnu
+ENV nc_inc=/usr/include
+ENV nc_lib=/usr/lib/x86_64-linux-gnu
 
-ENV PATH /Parallel-SnowModel-1.0/:${PATH}
+ENV PATH=/Parallel-SnowModel-1.0/:${PATH}
  
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get update -y \
