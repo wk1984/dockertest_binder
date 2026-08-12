@@ -12,7 +12,7 @@ ENV PATH /Parallel-SnowModel-1.0/:${PATH}
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends cmake nano git wget curl libcurl4-openssl-dev openssh-server ca-certificates \
-    && apt-get install -y --no-install-recommends open-coarrays-bin libcoarrays-dev openmpi-bin libopenmpi-dev \
+    && apt-get install -y --no-install-recommends libcoarrays-openmpi-dev openmpi-bin libopenmpi-dev \
     && apt-get install -y --no-install-recommends libnetcdf-dev libnetcdf-cxx-legacy-dev libnetcdff-dev netcdf-bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
