@@ -1,5 +1,5 @@
 # 使用官方的 R 3.6.2 基础镜像
-FROM rocker/binder:3.6.2
+FROM jupyter/r-notebook:x86_64-lab-3.6.2
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
@@ -13,11 +13,6 @@ RUN echo "deb http://archive.debian.org/debian/ buster main" > /etc/apt/sources.
 # 2. 修复 MRAN 停服导致的 404 错误
 # 将 R 的默认源修改为 Posit Package Manager 的 2020-02-28 历史快照
 RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/2020-02-28/"))' > /usr/local/lib/R/etc/Rprofile.site
-
-# 安装 IRkernel（R 的 Jupyter 内核）并在系统中全局注册
-# 注意：这里不指定 repos，让其使用 rocker 镜像默认配置的历史快照源，确保兼容 R 3.6.2
-RUN R -e "install.packages('IRkernel')" \
-    && R -e "IRkernel::installspec(user = FALSE)"
 
 # 设置工作目录
 WORKDIR /workspace
