@@ -1,6 +1,6 @@
 # 使用官方的 R 3.6.2 基础镜像
 # FROM jupyter/r-notebook:4.0
-FROM  jupyter/r-notebook:r-3.6.3
+FROM  jupyter/r-notebook:hub-1.3.0
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
 
