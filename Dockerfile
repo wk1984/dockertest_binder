@@ -6,6 +6,12 @@ FROM rocker/r-ver:3.6.2
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
 
+# 修复 Debian Buster (10) EOL 导致的 apt 源 404 错误
+# 将源替换为 archive.debian.org，并忽略 GPG 签名时间过期检查
+RUN echo "deb http://archive.debian.org/debian/ buster main" > /etc/apt/sources.list \
+    && echo "deb-src http://archive.debian.org/debian/ buster main" >> /etc/apt/sources.list \
+    && echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99-archive
+
 # 安装系统依赖（Python/Jupyter 环境以及常见 R 包的底层 C/C++ 库）
 RUN apt-get update && apt-get install -y \
     python3 \
