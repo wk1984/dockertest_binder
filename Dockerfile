@@ -23,6 +23,7 @@ RUN conda install --quiet --yes -c conda-forge \
     'r-raster' \
     'r-rgdal' \
     'r-sf' \
+	'r-stringi' \
     'r-lwgeom' \
     'r-foreach' \
     'r-doparallel' \
