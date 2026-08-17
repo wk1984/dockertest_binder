@@ -1,12 +1,10 @@
 # 使用官方的 R 3.6.2 基础镜像
-FROM jupyter/r-notebook:x86_64-lab-3.6.2
+FROM jupyter/r-notebook:4.0
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 2. 修复 MRAN 停服导致的 404 错误
-# 将 R 的默认源修改为 Posit Package Manager 的 2020-02-28 历史快照
-# RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/2020-02-28/"))' > /usr/local/lib/R/etc/Rprofile.site
+RUN R --version
 
 # 设置工作目录
 WORKDIR /workspace
