@@ -25,9 +25,13 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 升级 pip 并安装 JupyterLab
+# 升级 pip 并安装兼容 Python 3.7 的 JupyterLab (限制在 4.0.0 以下版本)
 RUN pip3 install --upgrade pip \
-    && pip3 install --no-cache-dir jupyter jupyterlab
+    && pip3 install --no-cache-dir jupyter "jupyterlab<4.0.0"
+
+# 2. 修复 MRAN 停服导致的 404 错误
+# 将 R 的默认源修改为 Posit Package Manager 的 2020-02-28 历史快照
+RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/2020-02-28/"))' > /usr/local/lib/R/etc/Rprofile.site
 
 # 安装 IRkernel（R 的 Jupyter 内核）并在系统中全局注册
 # 注意：这里不指定 repos，让其使用 rocker 镜像默认配置的历史快照源，确保兼容 R 3.6.2
