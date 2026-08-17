@@ -9,6 +9,9 @@
 # 使用官方的 R 3.6.2
 # FROM jupyter/r-notebook:8882c505faa8
 
+FROM jupyter/r-notebook:10c9768598ab
+
+# 使用官方的 R 3.6.3
 FROM jupyter/r-notebook:04f7f60d34a6
 
 # 设置环境变量，避免 apt 安装时出现交互提示
