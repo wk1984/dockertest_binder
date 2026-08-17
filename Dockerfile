@@ -6,8 +6,9 @@
 # FROM jupyter/r-notebook:e00fd05364df
 # FROM jupyter/r-notebook:29e069665f5f
 # FROM jupyter/r-notebook:1c8073a927aa
+# FROM jupyter/r-notebook:31b807ec9e83
 
-FROM jupyter/r-notebook:31b807ec9e83
+FROM jupyter/r-notebook:8882c505faa8
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
