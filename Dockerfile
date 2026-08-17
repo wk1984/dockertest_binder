@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # 2. 修复 MRAN 停服导致的 404 错误
 # 将 R 的默认源修改为 Posit Package Manager 的 2020-02-28 历史快照
-RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/2020-02-28/"))' > /usr/local/lib/R/etc/Rprofile.site
+# RUN echo 'options(repos = c(CRAN = "https://packagemanager.posit.co/cran/2020-02-28/"))' > /usr/local/lib/R/etc/Rprofile.site
 
 # 设置工作目录
 WORKDIR /workspace
