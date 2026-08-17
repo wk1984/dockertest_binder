@@ -1,7 +1,7 @@
-FROM r-base:3.6.2
+# FROM r-base:3.6.2
 
 # 使用官方的 R 3.6.2 基础镜像
-# FROM rocker/r-ver:3.6.2
+FROM rocker/r-ver:3.6.2
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
