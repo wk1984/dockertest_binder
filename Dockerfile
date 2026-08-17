@@ -4,8 +4,9 @@
 # 使用官方的 R 3.6.2
 # FROM jupyter/r-notebook:7a0c7325e470
 # FROM jupyter/r-notebook:e00fd05364df
+# FROM jupyter/r-notebook:29e069665f5f
 
-FROM jupyter/r-notebook:29e069665f5f
+FROM jupyter/r-notebook:1c8073a927aa
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
