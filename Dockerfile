@@ -14,12 +14,12 @@
 
 # FROM jupyter/base-notebook:x86_64-ubuntu-22.04
 
-FROM mambaorg/micromamba:2.3-ubuntu20.04
+FROM condaforge/mambaforge:4.9.2-5
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN micromamba install --quiet --yes -c conda-forge \
+RUN mamba install --quiet --yes -c conda-forge \
     'jupyter' \
     'r-base=3.6.2' \
     'r-ncdf4' \
