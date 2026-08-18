@@ -14,13 +14,39 @@
 
 # FROM jupyter/base-notebook:x86_64-ubuntu-22.04
 
-FROM condaforge/miniforge-pypy3:23.1.0-1
+FROM ubuntu:20.04
+	
+# 设置环境变量，允许 root 用户运行 MPI
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+ARG DEBIAN_FRONTEND=noninteractive
+ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 
-# 设置环境变量，避免 apt 安装时出现交互提示
-ENV DEBIAN_FRONTEND=noninteractive
+# 安装所有依赖（一次性安装，减少层数）
+RUN apt-get update -y && \
+    apt-get install -y wget curl git sudo
+    
+#=============================================================================================
+#  Set up Python Jupyter Environment ...
+#=============================================================================================
+
+# ARG url0=https://github.com/conda-forge/miniforge/releases/download/22.9.0-2/Miniforge3-22.9.0-2-Linux-x86_64.sh
+ARG url0=https://github.com/conda-forge/miniforge/releases/download/25.9.1-0/Miniforge3-25.9.1-0-Linux-x86_64.sh
+# ARG url0=https://github.com/conda-forge/miniforge/releases/download/4.12.0-0/Miniforge3-4.12.0-0-Linux-x86_64.sh
+
+RUN wget --quiet ${url0} -O ~/miniconda.sh \
+    && /bin/bash ~/miniconda.sh -b -p /opt/miniconda3 \
+    && rm ~/miniconda.sh \
+    && ln -s /opt/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+    && echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
+
+ENV PATH=/opt/miniconda3/bin:${PATH}
+
+RUN . /root/.bashrc \
+    && /opt/miniconda3/bin/conda init bash \
+    && conda info --envs
 
 RUN conda install --quiet --yes -c conda-forge \
-    'jupyter' \
     'r-base=3.6.2' \
     'r-ncdf4' \
     'r-raster' \
@@ -32,6 +58,7 @@ RUN conda install --quiet --yes -c conda-forge \
     'r-doparallel' \
 	'r-geoshere' \
 	'r-udunits2' \
+	'python=3.6' \
     && conda clean --all -f -y
 
 # 设置工作目录
