@@ -14,7 +14,7 @@
 
 # FROM jupyter/base-notebook:x86_64-ubuntu-22.04
 
-FROM condaforge/mambaforge:24.9.2-0
+FROM condaforge/mambaforge:4.14.0-0
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
