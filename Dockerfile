@@ -44,7 +44,7 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
-    && conda info --envs
+    && conda info --envs \
 	&& conda create -n R36 -c conda-forge 
 	
 RUN conda activate R36 \
