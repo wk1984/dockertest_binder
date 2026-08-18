@@ -57,7 +57,7 @@ RUN . /root/.bashrc \
     'r-lwgeom' \
     'r-foreach' \
     'r-doparallel' \
-	'r-geoshere' \
+	'r-geosphere' \
 	'r-udunits2' \
     && conda clean --all -f -y
 
