@@ -27,6 +27,8 @@ RUN conda install --quiet --yes -c conda-forge \
     'r-lwgeom' \
     'r-foreach' \
     'r-doparallel' \
+	'r-geoshere' \
+	'r-udunits2' \
     && conda clean --all -f -y
 
 # 设置工作目录
