@@ -58,7 +58,6 @@ RUN conda install --quiet --yes -c conda-forge \
     'r-doparallel' \
 	'r-geoshere' \
 	'r-udunits2' \
-	'python=3.6' \
     && conda clean --all -f -y
 
 # 设置工作目录
