@@ -12,12 +12,15 @@
 # 使用官方的 R 3.6.3
 # FROM jupyter/r-notebook:04f7f60d34a6
 
-FROM jupyter/base-notebook:x86_64-ubuntu-22.04
+# FROM jupyter/base-notebook:x86_64-ubuntu-22.04
+
+FROM mambaorg/micromamba:2.3-ubuntu20.04
 
 # 设置环境变量，避免 apt 安装时出现交互提示
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN conda install --quiet --yes -c conda-forge \
+RUN micromamba install --quiet --yes -c conda-forge \
+    'jupyter' \
     'r-base=3.6.2' \
     'r-ncdf4' \
     'r-raster' \
