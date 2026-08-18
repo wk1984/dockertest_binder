@@ -31,8 +31,8 @@ RUN apt-get update -y && \
 #=============================================================================================
 
 # ARG url0=https://github.com/conda-forge/miniforge/releases/download/22.9.0-2/Miniforge3-22.9.0-2-Linux-x86_64.sh
-# ARG url0=https://github.com/conda-forge/miniforge/releases/download/25.9.1-0/Miniforge3-25.9.1-0-Linux-x86_64.sh
-ARG url0=https://github.com/conda-forge/miniforge/releases/download/4.12.0-0/Miniforge3-4.12.0-0-Linux-x86_64.sh
+ARG url0=https://github.com/conda-forge/miniforge/releases/download/25.9.1-0/Miniforge3-25.9.1-0-Linux-x86_64.sh
+# ARG url0=https://github.com/conda-forge/miniforge/releases/download/4.12.0-0/Miniforge3-4.12.0-0-Linux-x86_64.sh
 
 RUN wget --quiet ${url0} -O ~/miniconda.sh \
     && /bin/bash ~/miniconda.sh -b -p /opt/miniconda3 \
@@ -45,8 +45,10 @@ ENV PATH=/opt/miniconda3/bin:${PATH}
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs
-
-RUN conda install --quiet --yes -c conda-forge \
+	&& conda create -n R36 -c conda-forge 
+	
+RUN conda activate R36 \
+    && conda install --quiet --yes -c conda-forge \
     'r-base=3.6.2' \
     'r-ncdf4' \
     'r-raster' \
