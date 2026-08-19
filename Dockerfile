@@ -23,5 +23,5 @@ RUN . /root/.bashrc \
     && conda info --envs \
     && conda create -n R36 -c conda-forge \
     && conda activate R36 \
-    && mamba install -c conda-forge r-base==3.6.3 r-ncdf4 r-raster r-rgdal r-sf r-stringi r-lwgeom r-foreach r-doparallel r-geosphere r-udunits2 r-foreign r-rcolorbrewer r-maps gmt==6.1.1 -y \
+    && mamba install -c conda-forge ipykernel r-base==3.6.3 r-ncdf4 r-raster r-rgdal r-sf r-stringi r-lwgeom r-foreach r-doparallel r-geosphere r-udunits2 r-foreign r-rcolorbrewer r-maps gmt==6.1.1 -y \
     && conda clean --all
