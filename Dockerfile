@@ -15,11 +15,11 @@ RUN wget --quiet https://github.com/conda-forge/miniforge/releases/download/4.12
     && ln -s /opt/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
     && echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
-ENV PATH /opt/miniconda3/bin:${PATH}
-ARG PATH /opt/miniconda3/bin:${PATH}
+ENV PATH=/opt/miniconda3/bin:${PATH}
+ARG PATH=/opt/miniconda3/bin:${PATH}
 
 RUN . /root/.bashrc \
     && /opt/miniconda3/bin/conda init bash \
     && conda info --envs \
-    && mamba install -c conda-forge conda install -c conda-forge r-base==3.6.3 r-ncdf4 r-raster r-rgdal r-sf r-stringi r-lwgeom r-foreach r-doparallel r-geosphere r-udunits2 r-foreign r-rcolorbrewer r-maps gmt==6.1.1 -y \
+    && mamba install -c conda-forge r-base==3.6.3 r-ncdf4 r-raster r-rgdal r-sf r-stringi r-lwgeom r-foreach r-doparallel r-geosphere r-udunits2 r-foreign r-rcolorbrewer r-maps gmt==6.1.1 -y \
     && conda clean --all
