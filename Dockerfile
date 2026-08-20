@@ -52,4 +52,4 @@ RUN conda create -y -n r36 -c conda-forge r-base==3.6.3 r-ncdf4 r-raster r-rgdal
     
 USER jovyan
 
-CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser" ,  "--allow-root"]
+# CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser" ,  "--allow-root"]
