@@ -51,5 +51,6 @@ RUN conda create -y -n r36 -c conda-forge r-base==3.6.3 r-ncdf4 r-raster r-rgdal
     ln -s /opt/conda/envs/r36/bin/Rscript /usr/local/bin/Rscript
     
 USER jovyan
+WORKDIR /home/jovyan
 
 # CMD ["jupyter-lab" ,  "--ip=0.0.0.0"  , "--no-browser" ,  "--allow-root"]
