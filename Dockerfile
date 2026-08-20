@@ -62,5 +62,9 @@ USER ${NB_USER}
 
 WORKDIR /work
 
-RUN git clone https://github.com/PIK-LPJmL/LandInG.git
+RUN git clone https://github.com/PIK-LPJmL/LandInG.git && \
+    cd LandInG && \
+	cd gadm && \
+    wget https://geodata.ucdavis.edu/gadm/gadm3.6/gadm36_levels_shp.zip && \
+	unzip gadm36_levels_shp.zip
 
