@@ -16,7 +16,7 @@ USER root
 
 # 2. 安装基础依赖
 RUN apt-get update -y && \
-    apt-get install -y wget curl git nco build-essential gfortran \
+    apt-get install -y wget curl git nco nano build-essential gfortran \
     libreadline-dev m4 libnetcdf-dev libnetcdff-dev libhdf5-dev \
     libeccodes-dev sqlite3 libsqlite3-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -48,7 +48,7 @@ RUN wget https://code.mpimet.mpg.de/attachments/download/12760/cdo-1.7.2.tar.gz 
 RUN cdo -V
 
 # 6. 安装 R 3.6.x 及 Jupyter R 内核
-RUN conda create -y -n r36 -c conda-forge r-base=3.6.3 r-irkernel && \
+RUN conda create -y -n r36 -c conda-forge r-base=3.6.3 r-irkernel r-ncdf4 r-raster r-rgdal r-sf r-stringi r-lwgeom r-foreach r-doparallel r-geosphere r-udunits2 r-foreign r-rcolorbrewer r-maps r-abind r-data.table gmt==6.1.1 && \
     conda clean --all -f -y && \
     conda run -n r36 R -e "IRkernel::installspec(user = FALSE)" && \
     ln -s /opt/conda/envs/r36/bin/R /usr/local/bin/R && \
@@ -59,3 +59,8 @@ RUN chown -R ${NB_UID} ${HOME}
 
 # 8. 切换回普通用户，不需要 CMD，Binder 会自动接管启动
 USER ${NB_USER}
+
+WORKDIR /work
+
+RUN git clone https://github.com/PIK-LPJmL/LandInG.git
+
