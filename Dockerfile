@@ -17,8 +17,7 @@ RUN julia -e 'using Pkg; \
         "Interpolations", \
         "EnsembleKalmanProcesses", \
         "ClimaCore", \
-        "Plots"
-    ]); \
+        "Plots"]); \
     Pkg.precompile(); \
     Pkg.gc()'
 	
